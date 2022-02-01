@@ -7,7 +7,7 @@ package calcul;
  * @author sylve
  *
  */
-public class calculMetrique {
+public class CalculMetrique {
 
 	/**
 	 * @param args
