@@ -3,6 +3,7 @@
  */
 package calcul;
 
+
 /**
  * @author sylve
  *
@@ -13,8 +14,8 @@ public class CalculMetrique {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		System.out.println("hello");
+		SaveCsv csv1 = new SaveCsv("nom");
+		System.out.println(csv1.getNomDossier());
 	}
 
 }
