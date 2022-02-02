@@ -1,5 +1,7 @@
 /**
- * 
+ * @author Nicolas Sabourin
+ * @author Dave Sanon-Abraham
+ *
  */
 package calcul;
 
