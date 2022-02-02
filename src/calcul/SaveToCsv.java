@@ -13,8 +13,11 @@ package calcul;
  */
 public class SaveToCsv {
 	
+	/** Le nom du dossier racine du projet*/
 	private String nomDossier;
+	/** Le nom qui sera utiliser pour le fichier csv de paquets. */
 	private String nomFichierPaquet;
+	/** Le nom qui sera utiliser pour le fichier csv de classes. */
 	private String nomFichierClasse;
 	
 	/**
@@ -44,7 +47,7 @@ public class SaveToCsv {
 	 * @param classe_CLOC  Nombre de lignes de code qui contiennent des commentaires.
 	 * @param classe_DC  Densite de comemntaire pour une classe: classe_DC = classe_CLOC / classe_LOC.
 	 */
-	public void AjoutClasse(String chemin, String classe, int classe_LOC, int classe_CLOC, int classe_DC) {
+	public void ajoutClasse(String chemin, String classe, int classe_LOC, int classe_CLOC, int classe_DC) {
 		//TODO ouvrir le fichier classe et lui ajouter la ligne pour encsuite le refermer
 	}
 	
@@ -57,14 +60,14 @@ public class SaveToCsv {
 	 * @param paquet_CLOC  Nombre de lignes de code qui contiennent des commentaires.
 	 * @param paquet_DC  Densite de comemntaire pour le paquet: paquet_DC = paquet_CLOC / paquet_LOC.
 	 */
-	public void AjoutPaquet(String chemin, String paquet, int paquet_LOC, int paquet_CLOC, int paquet_DC) {
+	public void ajoutPaquet(String chemin, String paquet, int paquet_LOC, int paquet_CLOC, int paquet_DC) {
 		//TODO ouvrir le fichier paquet et lui ajouter la ligne pour encsuite le refermer
 	}
 	
 	/**
 	 * Imprimer dans la console le contenu du fichier de sauvegarde des paquets.
 	 */
-	public void ReadPaquet() {
+	public void readPaquet() {
 		//TODO println de tout le fichier de paquet
 		System.out.println("Voici le paquet");
 	}
@@ -72,7 +75,7 @@ public class SaveToCsv {
 	/**
 	 * Imprimer dans la console le contenu du fichier de sauvegarde des classes.
 	 */
-	public void ReadClasse() {
+	public void readClasse() {
 		//TODO println de tout le fichier de classe
 		System.out.println("Voici la classet");
 	}
