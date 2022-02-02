@@ -6,7 +6,7 @@
 package calcul;
 
 /**
- * Classe pour calculer les metriques d'un paquet.
+ * Classe pour calculer les metriques d'un paquet et de ses classes.
  * - compter LOC
  * - compter CLOC
  * - calculer DC
@@ -34,7 +34,6 @@ public class CalculPaquet {
 	 * @param nomPaquet  Nom du paquet
 	 */
 	public CalculPaquet(String chemin, String nomPaquet) {
-		super();
 		this.chemin = chemin;
 		this.nomPaquet = nomPaquet;
 	}
