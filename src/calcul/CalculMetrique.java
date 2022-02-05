@@ -5,6 +5,10 @@
  */
 package calcul;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+
 
 /**
  * Calcule des metrique de la qualite logiciel par:
@@ -21,6 +25,9 @@ public class CalculMetrique {
 	
 	/** unite de sauvegarde pour les fichiers csv */
 	private static SaveToCsv uniteSauvegarde;
+	
+	/** Nom du fichier source du projet a calculer*/
+	private static String data;
 	
 	
 	/**
@@ -44,8 +51,30 @@ public class CalculMetrique {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		uniteSauvegarde = new SaveToCsv("nomDuDossier");
-		System.out.println(uniteSauvegarde.getNomDossier());
+		
+//		BufferedReader csvReader = new BufferedReader(new FileReader(pathToCsv));
+//		while ((row = csvReader.readLine()) != null) {
+//		    String[] data = row.split(",");
+//		    // do something with the data
+//		}
+//		csvReader.close();
+		
+		File arbre = new File("fichier/");
+		String[] listeFichier = arbre.list();
+		System.out.println(listeFichier[0]);
+		File arbre2 = new File("fichier/"+listeFichier[0]);
+		System.out.println(arbre2.getAbsolutePath());
+		String[] listeFichier2 = arbre2.list();
+		System.out.println(listeFichier2[0]);
+		int index = listeFichier2[0].lastIndexOf('.');
+		if (index > 0) {
+			System.out.println(listeFichier2[0].substring(index + 1));
+		}
+			
+		
+//		uniteSauvegarde = new SaveToCsv("nomDuDossier");
+//		System.out.println(uniteSauvegarde.getNomDossier());
 	}
 
 }
+ 

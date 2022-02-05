@@ -13,7 +13,7 @@ package calcul;
  * 
  * Nous passont au travers de tout ses classes pour ce faire.
  */
-public class CalculClasse {
+public class Classe {
 
 	/** chemin pour trouver la classe (n'inclut pas le nom de la classe)*/
 	private String chemin;
@@ -25,12 +25,12 @@ public class CalculClasse {
 	private String[] classe;
 
 	/**
-	 * Constructeur de la classe CalculClasse
+	 * Constructeur de la classe Classe
 	 * 
 	 * @param chemin  Le chemin a partir du dossier source du projet pour trouver la classe (n'inclut pas la classe)
 	 * @param nomClasse  Le nom du fichier de la classe
 	 */
-	public CalculClasse(String chemin, String nomClasse) {
+	public Classe(String chemin, String nomClasse) {
 		this.chemin = chemin;
 		this.nomClasse = nomClasse;
 		this.classe = new String[5];   //TODO remplacer le 5 par la longueur de al structure dans le fichier config
@@ -41,8 +41,8 @@ public class CalculClasse {
 	/** 
 	 * Methode private pour ajouter les metriques d'une nouvelle classe trouver a la liste des classes
 	 */
-	private void addMetrique(String[] ligne) {
-		//TODO additionner les metriques de la ligne a celles de la  classes
+	private void saveMetrique(String[] ligne) {
+		//TODO sauvegarde metrique dans le fichier 
 	}
 	
 	/** 
