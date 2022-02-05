@@ -5,6 +5,9 @@
  */
 package calcul;
 
+import java.io.File;
+import java.io.FileWriter;
+
 /**
  * Classe SaveToCsv pour sauvegarder les resultat des calcules de metriques des paquets et classes
  * dans un fichier paquet_"nomDuDossier".csv et un fichier classe_"nomDuDossier".csv
@@ -13,11 +16,15 @@ package calcul;
  */
 public class SaveToCsv {
 	
-	
+	/** Chemin du dossier dans lequel se trouve les fichiers de sauvegarde */
+	private String dossierSauvegarde = "sauvegarde" + '/';
 	/** Le nom qui sera utiliser pour le fichier csv de paquets. */
 	private String nomFichierPaquet;
 	/** Le nom qui sera utiliser pour le fichier csv de classes. */
 	private String nomFichierClasse;
+	/** Le nombre de metrique dans une liste */
+	private int longueurMetrique = 5;
+	
 	
 	/**
 	 * Contructeur de l'unite de sauvegarde
@@ -39,14 +46,47 @@ public class SaveToCsv {
 	/**
 	 * Ajoute une entree dans le fichier d'enregistrement des classes.
 	 * 
-	 * @param chemin  Chemin du dossier source du fichier de la classe.
-	 * @param classe  Nom du fichier de la classe.
-	 * @param classe_LOC  Nombre de lignes de code de la classe.
-	 * @param classe_CLOC  Nombre de lignes de code qui contiennent des commentaires.
-	 * @param classe_DC  Densite de comemntaire pour une classe: classe_DC = classe_CLOC / classe_LOC.
+	 * @param metriques String[] :
+	 * - Chemin du dossier source du fichier de la classe.
+	 * - classe  Nom du fichier de la classe.
+	 * - classe_LOC  Nombre de lignes de code de la classe.
+	 * - classe_CLOC  Nombre de lignes de code qui contiennent des commentaires.
+	 * - classe_DC  Densite de comemntaire pour une classe: classe_DC = classe_CLOC / classe_LOC.
 	 */
-	public void ajoutClasse(String chemin, String classe, int classe_LOC, int classe_CLOC, int classe_DC) {
-		//TODO ouvrir le fichier classe et lui ajouter la ligne pour encsuite le refermer
+	public void ajoutClasse(String[] metriques) {
+		// essais de creer le fichier de sauvegarde si ce n'est pas deja fait
+		try {
+			// ouvrir le dossier
+			File csvClasse = new File(dossierSauvegarde + "/" + nomFichierClasse + ".csv");
+			if(csvClasse.createNewFile()) {
+				//TODO ajouter l'entete au nouveau fichier
+			} 
+		} catch (Exception e) {
+			System.out.println(e);
+			e.printStackTrace();
+		}
+		
+		// savegarde les metrique dans le fichier
+		try {
+			FileWriter sauvegarde = new FileWriter (dossierSauvegarde + "/" + nomFichierClasse + ".csv");
+			int compte = 1;
+			
+			for (String i : metriques) {
+				sauvegarde.write(i);
+				if(compte == longueurMetrique) {
+					sauvegarde.write("\n");
+				}
+				else {
+					sauvegarde.write(",");
+				}
+			}
+			
+			sauvegarde.close();
+			
+		} catch (Exception e) {
+			System.out.println(e);
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -78,14 +118,10 @@ public class SaveToCsv {
 		System.out.println("Voici la classet");
 	}
 
-	
-	
-	/**
-	 * Pour verifier que nous avons bien la bonne unite de sauvegarde.
-	 * 
-	 * @return String contenant le nom du dossier racine
-	 */
-	public String getNomDossier() {
-		return nomDossier;
+	public static void main(String[] args) {
+		SaveToCsv test = new SaveToCsv();
+		String[] donnee= {"chemin", "nom", "24", "654", "4.378"};
+		test.ajoutClasse(donnee);
+		
 	}
 }
