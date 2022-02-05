@@ -5,6 +5,7 @@
  */
 package calcul;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 
@@ -59,6 +60,9 @@ public class SaveToCsv {
 			// ouvrir le dossier
 			File csvClasse = new File(dossierSauvegarde + "/" + nomFichierClasse + ".csv");
 			if(csvClasse.createNewFile()) {
+				FileWriter fw = new FileWriter (csvClasse, true);
+				BufferedWriter br = new BufferedWriter(fw);
+				br.write("chemin, nom, cdnoas, cdnao, cdsno\n");
 				//TODO ajouter l'entete au nouveau fichier
 			} 
 		} catch (Exception e) {
@@ -68,20 +72,21 @@ public class SaveToCsv {
 		
 		// savegarde les metrique dans le fichier
 		try {
-			FileWriter sauvegarde = new FileWriter (dossierSauvegarde + "/" + nomFichierClasse + ".csv");
+			FileWriter fw = new FileWriter (dossierSauvegarde + "/" + nomFichierClasse + ".csv", true);
+			BufferedWriter br = new BufferedWriter(fw);
 			int compte = 1;
 			
 			for (String i : metriques) {
-				sauvegarde.write(i);
+				br.write(i);
 				if(compte == longueurMetrique) {
-					sauvegarde.write("\n");
+					br.write("\n");
+				} else {
+					br.write(",");
 				}
-				else {
-					sauvegarde.write(",");
-				}
+				compte ++;
 			}
-			
-			sauvegarde.close();
+			br.close();
+			fw.close();
 			
 		} catch (Exception e) {
 			System.out.println(e);
