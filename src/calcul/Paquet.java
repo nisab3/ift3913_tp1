@@ -5,6 +5,8 @@
  */
 package calcul;
 
+import java.io.File;
+
 /**
  * Classe pour calculer les metriques d'un paquet et de ses classes.
  * - compter LOC
@@ -18,11 +20,13 @@ public class Paquet {
 	/** chemin pour trouver le paquet (n'inclut pas celui du paquet)*/
 	private String chemin;
 	
+	//TODO aller chercher les variables dans el fichier properties
+	/** type de separateur*/
+	private String separator;
+	
 	/** Nom du paquet*/
 	private String nomPaquet;
 	
-	/** Liste des metriques de classes*/
-	private String[] classes;
 	
 	/** Liste des metriques du paquet*/
 	private String[] paquet;
@@ -30,12 +34,11 @@ public class Paquet {
 	/**
 	 * Constructeur de la classe  Paquet
 	 * 
-	 * @param chemin  Le chemin a partir du dossier source du projet pour trouver le paquet (n'inclut pas celui du paquet)
-	 * @param nomPaquet  Nom du paquet
+	 * @param paquet  Objet java.io.File du paquet
 	 */
-	public Paquet(String chemin, String nomPaquet) {
-		this.chemin = chemin;
-		this.nomPaquet = nomPaquet;
+	public Paquet(File paquet) {
+		this.chemin = paquet.getParent();
+		this.nomPaquet = paquet.getName();
 	}
 	
 	/**
@@ -54,8 +57,13 @@ public class Paquet {
 	 * 
 	 */
 	private void parcourirClasse() {
-		//TODO rechercher tout les classes et les annalyser une apres l'autre
-		//TODO enregistrer les metriques de classes
+		
+		File racine = new File(chemin + separator + nomPaquet);
+		String[] listeFichier = racine.list();
+		for (String i : listeFichier) {
+			
+		}
+		
 		//TODO enresistrer les metrique de paquet
 	}
 	
@@ -66,6 +74,14 @@ public class Paquet {
 		//TODO additionner les metriques de cette classe a celle total du paquet
 	}
 	
+	/**
+	 * Methode pulbic pour calculer la liste des metriques du paquet et les sauvegarder dans le fichier
+	 */
+	public void calcul() {
+		//TODO appeler parcourir classe
+		System.out.println("debut calcul paquet " + nomPaquet);
+		
+	}
 	
 
 }
