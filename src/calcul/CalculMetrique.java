@@ -87,6 +87,8 @@ public class CalculMetrique {
 						
 						// si c'est pas un dossier, compare a l'extention voulu
 						if (index >= 0 && i.substring(index + 1).contentEquals(extention)) {
+							
+							// demande l'analyse de la classe
 							Classe classe = new Classe(racine.getPath(), i);
 							String[] retourInutil = classe.getMetrique();
 						}
