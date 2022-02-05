@@ -13,8 +13,7 @@ package calcul;
  */
 public class SaveToCsv {
 	
-	/** Le nom du dossier racine du projet*/
-	private String nomDossier;
+	
 	/** Le nom qui sera utiliser pour le fichier csv de paquets. */
 	private String nomFichierPaquet;
 	/** Le nom qui sera utiliser pour le fichier csv de classes. */
@@ -23,17 +22,16 @@ public class SaveToCsv {
 	/**
 	 * Contructeur de l'unite de sauvegarde
 	 * 
-	 * @param nomDossier  Le nom du dossier racine du projet
 	 */
-	public SaveToCsv(String nomDossier) {
+	public SaveToCsv() {
 		
-		this.nomDossier = nomDossier;
 		
-		this.nomFichierClasse = "classe_" + nomDossier; 
+		
+		this.nomFichierClasse = "classes"; 
 		//TODO creer le fichier csv pour classe
 		//TODO ajouter l'entete au fichier de classe
 		
-		this.nomFichierPaquet = "paquet_" + nomDossier;
+		this.nomFichierPaquet = "paquets";
 		//TODO creer le fichier csv pour paquet
 		//TODO ajouter l'entete au fichier de paquet
 	}
