@@ -7,7 +7,10 @@ package calcul;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.IOException;
+import java.util.Properties;
 
 
 /**
@@ -23,12 +26,12 @@ import java.io.FileReader;
  */
 public class CalculMetrique {
 	
-	//TODO changer les deux variable pour celle du fichier properties
+	
 	/** Nom du fichier source du projet a calculer*/
-	private static String data = "data" + '/';
+	private static String data;
 	
 	/** extention du des fichier de code a parcourir*/
-	private static String extention = "java";
+	private static String extension;
 	
 	
 	/**
@@ -61,7 +64,7 @@ public class CalculMetrique {
 				int index = i.lastIndexOf('.');
 				
 				// si c'est pas un dossier, compare a l'extention voulu
-				if (index >= 0 && i.substring(index + 1).contentEquals(extention)) {
+				if (index >= 0 && i.substring(index + 1).contentEquals(extension)) {
 					fichierCode = true;			
 				}
 				
@@ -86,7 +89,7 @@ public class CalculMetrique {
 						int index = i.lastIndexOf('.');
 						
 						// si c'est pas un dossier, compare a l'extention voulu
-						if (index >= 0 && i.substring(index + 1).contentEquals(extention)) {
+						if (index >= 0 && i.substring(index + 1).contentEquals(extension)) {
 							
 							// demande l'analyse de la classe
 							Classe classe = new Classe(racine.getPath(), i);
@@ -109,15 +112,22 @@ public class CalculMetrique {
 	 */
 	public static void main(String[] args) {
 		
-//		BufferedReader csvReader = new BufferedReader(new FileReader(pathToCsv));
-//		while ((row = csvReader.readLine()) != null) {
-//		    String[] data = row.split(",");
-//		    // do something with the data
-//		}
-//		csvReader.close();
+		// loader les properties
+		Properties config = new Properties();
+		try { 
+			FileInputStream fis = new FileInputStream("src/calcul/config.properties");
+			config.load(fis);
+			data = config.getProperty("Root") + '/';
+			extension = config.getProperty("Extension");
+			
+		} catch (IOException io) {
+			io.printStackTrace();
+		}
+		
+		
+
 		System.out.println("bienvenue dans le programme de calcul de metrique");
-		parcourir(data);
-//		
+		parcourir(data);	
 	}
 
 }
