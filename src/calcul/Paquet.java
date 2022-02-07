@@ -6,6 +6,9 @@
 package calcul;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 /**
  * Classe pour calculer les metriques d'un paquet et de ses classes.
@@ -18,12 +21,12 @@ import java.io.File;
 public class Paquet {
 	
 	/** extention du des fichier de code a parcourir*/
-	private static String extention = "java";
+	private static String extension;
 	
-	/** chemin pour trouver le paquet (n'inclut pas celui du paquet)*/
+	/** File qui repr/sente le paquet a analyser*/
 	private File paquet;
 	
-	//TODO aller chercher les variables dans el fichier properties
+	
 
 	/** Longueur de la liste des metriques du paquet*/
 	private int longueur;
@@ -41,8 +44,22 @@ public class Paquet {
 	 */
 	public Paquet(File paquet) {
 		this.paquet = paquet;
-		//TODO aller chercher la longeure de la liste des metrique dans properties
-		this.resultat = new String[5];
+		
+		// loader les properties
+		Properties config = new Properties();
+		try { 
+			FileInputStream fis = new FileInputStream("src/calcul/config.properties");
+			config.load(fis);
+			this.extension = config.getProperty("Extension");
+			String metriques = config.getProperty("MetriquesPaquet");
+			this.resultat = metriques.split(",");
+			System.out.println(resultat[0]+ " " +resultat[1]);
+			this.longueur = resultat.length;
+			
+		} catch (IOException io) {
+			io.printStackTrace();
+		}
+		
 		this.resultat[0] = paquet.getParent();
 		this.resultat[1] = paquet.getName();
 	}
@@ -71,7 +88,7 @@ public class Paquet {
 			int index = i.lastIndexOf('.');
 			
 			// si c'est pas un dossier, compare a l'extention voulu
-			if (index >= 0 && i.substring(index + 1).contentEquals(extention)) {
+			if (index >= 0 && i.substring(index + 1).contentEquals(extension)) {
 				
 				// demande l'analyse de la classe
 				Classe classe = new Classe(paquet.getPath(), i);
