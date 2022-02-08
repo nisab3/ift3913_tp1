@@ -21,7 +21,7 @@ import java.util.Properties;
 public class Paquet {
 	
 	/** extention du des fichier de code a parcourir*/
-	private static String extension;
+	private String extension;
 	
 	/** File qui repr/sente le paquet a analyser*/
 	private File paquet;
@@ -53,15 +53,20 @@ public class Paquet {
 			this.extension = config.getProperty("Extension");
 			String metriques = config.getProperty("MetriquesPaquet");
 			this.resultat = metriques.split(",");
-			System.out.println(resultat[0]+ " " +resultat[1]);
 			this.longueur = resultat.length;
 			
 		} catch (IOException io) {
 			io.printStackTrace();
 		}
 		
-		this.resultat[0] = paquet.getParent();
-		this.resultat[1] = paquet.getName();
+		for (int i = 0 ; i < this.longueur; i++) {
+			switch (i){
+				case 0 : this.resultat[i] = paquet.getParent();
+				case 1 : this.resultat[i] = paquet.getName();
+				default : this.resultat[i] = "0";
+			}
+		}
+		
 	}
 	
 	/**

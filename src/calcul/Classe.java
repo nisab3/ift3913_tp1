@@ -61,7 +61,8 @@ public class Classe {
 	 * @return String[] Les metriques de la classe
 	 */
 	public String[] getMetrique() {
-		return classe;
+		String[] fake = {"chemin", "classe", "10", "10", "10", "10", "10"};
+		return fake;
 	}
 	
 	

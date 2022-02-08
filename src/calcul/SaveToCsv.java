@@ -7,7 +7,10 @@ package calcul;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Properties;
 
 /**
  * Classe SaveToCsv pour sauvegarder les resultat des calcules de metriques des paquets et classes
@@ -18,13 +21,17 @@ import java.io.FileWriter;
 public class SaveToCsv {
 	
 	/** Chemin du dossier dans lequel se trouve les fichiers de sauvegarde */
-	private String dossierSauvegarde = "sauvegarde" + '/';
+	private String dossierSauvegarde;
 	/** Le nom qui sera utiliser pour le fichier csv de paquets. */
 	private String nomFichierPaquet;
 	/** Le nom qui sera utiliser pour le fichier csv de classes. */
 	private String nomFichierClasse;
 	/** Le nombre de metrique dans une liste */
-	private int longueurMetrique = 5;
+	private int longueurMetriques;
+	/** Entete de la liste des metrique d'un paquet */
+	private String[] metriquesPaquet;
+	/** Entete de la liste des metrique d'une classe */
+	private String[] metriquesClasse;
 	
 	
 	/**
@@ -33,52 +40,95 @@ public class SaveToCsv {
 	 */
 	public SaveToCsv() {
 		
+		// loader les properties
+		Properties config = new Properties();
+		try { 
+			FileInputStream fis = new FileInputStream("src/calcul/config.properties");
+			config.load(fis);
+			
+			this.dossierSauvegarde = config.getProperty("Sauvegarde") + "/";
+			this.nomFichierPaquet = config.getProperty("NomFichierSauvegardeP");
+			this.nomFichierClasse = config.getProperty("NomFichierSauvegardeC");
+			String metriques = config.getProperty("MetriquesClasse");
+			this.metriquesClasse = metriques.split(",");
+			metriques = config.getProperty("MetriquesPaquet");
+			this.metriquesPaquet = metriques.split(",");
+			this.longueurMetriques = this.metriquesPaquet.length;
+			
+			
+			
+		} catch (IOException io) {
+			io.printStackTrace();
+		}
 		
-		
-		this.nomFichierClasse = "classes"; 
-		//TODO creer le fichier csv pour classe
-		//TODO ajouter l'entete au fichier de classe
-		
-		this.nomFichierPaquet = "paquets";
-		//TODO creer le fichier csv pour paquet
-		//TODO ajouter l'entete au fichier de paquet
-	}
-	
-	/**
-	 * Ajoute une entree dans le fichier d'enregistrement des classes.
-	 * 
-	 * @param metriques String[] :
-	 * - Chemin du dossier source du fichier de la classe.
-	 * - classe  Nom du fichier de la classe.
-	 * - classe_LOC  Nombre de lignes de code de la classe.
-	 * - classe_CLOC  Nombre de lignes de code qui contiennent des commentaires.
-	 * - classe_DC  Densite de comemntaire pour une classe: classe_DC = classe_CLOC / classe_LOC.
-	 */
-	public void ajoutClasse(String[] metriques) {
-		// essais de creer le fichier de sauvegarde si ce n'est pas deja fait
+		// essais de creer le fichier de sauvegarde des classes si ce n'est pas deja fait
 		try {
-			// ouvrir le dossier
+			// ouvrir le fichier
 			File csvClasse = new File(dossierSauvegarde + "/" + nomFichierClasse + ".csv");
 			if(csvClasse.createNewFile()) {
 				FileWriter fw = new FileWriter (csvClasse, true);
 				BufferedWriter br = new BufferedWriter(fw);
-				br.write("chemin, nom, cdnoas, cdnao, cdsno\n");
-				//TODO ajouter l'entete au nouveau fichier
-			} 
+				
+				// Ajouter l'entete
+				for (int i = 0; i < longueurMetriques; i++) {
+					if (i + 1 == longueurMetriques) {
+						br.write(metriquesClasse[i] + "\n");
+					} else {
+						br.write(metriquesClasse[i] + ", ");
+					}
+				}
+				br.close();
+				fw.close();
+			}
 		} catch (Exception e) {
 			System.out.println(e);
 			e.printStackTrace();
 		}
 		
+		
+		// essais de creer le fichier de sauvegarde pour les paquets
+		try {
+			// ouvrir le fichier
+			File csvPaquet = new File(dossierSauvegarde + "/" + nomFichierPaquet + ".csv");
+			if(csvPaquet.createNewFile()) {
+				FileWriter fw = new FileWriter (csvPaquet, true);
+				BufferedWriter br = new BufferedWriter(fw);
+				
+				// Ajouter l'entete
+				for (int i = 0; i < longueurMetriques; i++) {
+					if (i + 1 == longueurMetriques) {
+						br.write(metriquesPaquet[i] + "\n");
+					} else {
+						br.write(metriquesPaquet[i] + ", ");
+					}
+				}
+				br.close();
+				fw.close();
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+			e.printStackTrace();
+		}
+		
+	}
+	
+	/**
+	 * Ajoute une entree dans le fichier d'enregistrement des classes.
+	 * 
+	 * @param metriques String[] :  Liste des metriques de la classe comme formater dans le fichier de properties
+	 */
+	public void ajoutClasse(String[] metriques) {
+		
 		// savegarde les metrique dans le fichier
 		try {
-			FileWriter fw = new FileWriter (dossierSauvegarde + "/" + nomFichierClasse + ".csv", true);
+			File csvClasse = new File(dossierSauvegarde + "/" + nomFichierClasse + ".csv");
+			FileWriter fw = new FileWriter (csvClasse, true);
 			BufferedWriter br = new BufferedWriter(fw);
 			int compte = 1;
 			
 			for (String i : metriques) {
 				br.write(i);
-				if(compte == longueurMetrique) {
+				if(compte == longueurMetriques) {
 					br.write("\n");
 				} else {
 					br.write(",");
@@ -97,35 +147,39 @@ public class SaveToCsv {
 	/**
 	 * Ajoute une entree dans le fichier d"enregistrement des paquets.
 	 * 
-	 * @param chemin  Chemin du dossier source du paquet.
-	 * @param paquet  Nom du dossier (paquet).
-	 * @param paquet_LOC  Nombre de lignes de code du paquet : la somme des LOC de ses classes.
-	 * @param paquet_CLOC  Nombre de lignes de code qui contiennent des commentaires.
-	 * @param paquet_DC  Densite de comemntaire pour le paquet: paquet_DC = paquet_CLOC / paquet_LOC.
+	 * @param metriques  String[] :  formater comme les metriques de paquet dans le fichier de properties
 	 */
-	public void ajoutPaquet(String chemin, String paquet, int paquet_LOC, int paquet_CLOC, int paquet_DC) {
-		//TODO ouvrir le fichier paquet et lui ajouter la ligne pour encsuite le refermer
+	public void ajoutPaquet(String[] metriques) {
+
+		// savegarde les metrique dans le fichier
+		try {
+			File csvPaquet = new File(dossierSauvegarde + "/" + nomFichierPaquet + ".csv");
+			FileWriter fw = new FileWriter (csvPaquet, true);
+			BufferedWriter br = new BufferedWriter(fw);
+			int compte = 1;
+			
+			for (String i : metriques) {
+				br.write(i);
+				if(compte == longueurMetriques) {
+					br.write("\n");
+				} else {
+					br.write(",");
+				}
+				compte ++;
+			}
+			br.close();
+			fw.close();
+			
+		} catch (Exception e) {
+			System.out.println(e);
+			e.printStackTrace();
+		}
 	}
 	
-	/**
-	 * Imprimer dans la console le contenu du fichier de sauvegarde des paquets.
-	 */
-	public void readPaquet() {
-		//TODO println de tout le fichier de paquet
-		System.out.println("Voici le paquet");
-	}
-	
-	/**
-	 * Imprimer dans la console le contenu du fichier de sauvegarde des classes.
-	 */
-	public void readClasse() {
-		//TODO println de tout le fichier de classe
-		System.out.println("Voici la classet");
-	}
 
 	public static void main(String[] args) {
 		SaveToCsv test = new SaveToCsv();
-		String[] donnee= {"chemin", "nom", "24", "654", "4.378"};
+		String[] donnee= {"chemin", "nom", "24", "654", "4.378", "0", "0"};
 		test.ajoutClasse(donnee);
 		
 	}
