@@ -79,7 +79,7 @@ public class Paquet {
 		return resultat;
 	}
 	
-	/** 
+	/*
 	 * Methode private pour rechercher dans le paquet chaque classe et lancer le calcul sur chacune d'elle.
 	 * 
 	 * Sauvegarde dans la variable resultat les totaux des metriques pour le paquet 
@@ -104,7 +104,7 @@ public class Paquet {
 		}
 	}
 	
-	/** 
+	/*
 	 * Methode private pour ajouter les metriques d'une nouvelle classe trouver au total du paquet
 	 * 
 	 * @param mClasse  Les metriques d'une classe sous forme String[]
@@ -119,11 +119,13 @@ public class Paquet {
 		resultat[4] = Double.toString(Double.valueOf(resultat[3]) / Double.valueOf(resultat[2]));
 	}
 	
-	/** 
+	/*
 	 * Sauvegarde les metriques du paquet dans le fichier default pour paquet du programme
 	 */
 	private void savePaquet() {
 		SaveToCsv uniteSauvegarde = new SaveToCsv();
+		//save paquet
+		uniteSauvegarde.ajoutPaquet(resultat);
 	}
 	
 	/**

@@ -66,14 +66,16 @@ public class SaveToCsv {
 			// ouvrir le fichier
 			File csvClasse = new File(dossierSauvegarde + "/" + nomFichierClasse + ".csv");
 			if(csvClasse.createNewFile()) {
+				// si on creer le fichier:
+				
 				FileWriter fw = new FileWriter (csvClasse, true);
 				BufferedWriter br = new BufferedWriter(fw);
 				
 				// Ajouter l'entete
 				for (int i = 0; i < longueurMetriques; i++) {
-					if (i + 1 == longueurMetriques) {
+					if (i + 1 == longueurMetriques) {			// pour la fin de ligne
 						br.write(metriquesClasse[i] + "\n");
-					} else {
+					} else {									// pour tout les autres
 						br.write(metriquesClasse[i] + ", ");
 					}
 				}
@@ -91,14 +93,16 @@ public class SaveToCsv {
 			// ouvrir le fichier
 			File csvPaquet = new File(dossierSauvegarde + "/" + nomFichierPaquet + ".csv");
 			if(csvPaquet.createNewFile()) {
+				
+				// si on creer le fichier:
 				FileWriter fw = new FileWriter (csvPaquet, true);
 				BufferedWriter br = new BufferedWriter(fw);
 				
 				// Ajouter l'entete
 				for (int i = 0; i < longueurMetriques; i++) {
-					if (i + 1 == longueurMetriques) {
+					if (i + 1 == longueurMetriques) {			// pour la fin de ligne 
 						br.write(metriquesPaquet[i] + "\n");
-					} else {
+					} else {									// pour tous les autres
 						br.write(metriquesPaquet[i] + ", ");
 					}
 				}
@@ -121,17 +125,21 @@ public class SaveToCsv {
 		
 		// savegarde les metrique dans le fichier
 		try {
+			
+			// ouvrir le fichier
 			File csvClasse = new File(dossierSauvegarde + "/" + nomFichierClasse + ".csv");
 			FileWriter fw = new FileWriter (csvClasse, true);
 			BufferedWriter br = new BufferedWriter(fw);
+			// pour compter les metriques car a la fin de ligne on mets \n
 			int compte = 1;
 			
+			// ecrire dans le fichier
 			for (String i : metriques) {
 				br.write(i);
 				if(compte == longueurMetriques) {
-					br.write("\n");
+					br.write("\n");					// si fin de ligne
 				} else {
-					br.write(",");
+					br.write(",");					// tous les autres
 				}
 				compte ++;
 			}
@@ -153,17 +161,21 @@ public class SaveToCsv {
 
 		// savegarde les metrique dans le fichier
 		try {
+			//ouvrir le fichier
 			File csvPaquet = new File(dossierSauvegarde + "/" + nomFichierPaquet + ".csv");
 			FileWriter fw = new FileWriter (csvPaquet, true);
 			BufferedWriter br = new BufferedWriter(fw);
+			
+			// pour compter les metriques car a la fin de ligne on mets \n
 			int compte = 1;
 			
+			// ecrire dans le fichier
 			for (String i : metriques) {
 				br.write(i);
 				if(compte == longueurMetriques) {
-					br.write("\n");
+					br.write("\n");					// si fin de ligne
 				} else {
-					br.write(",");
+					br.write(",");					// tout les autres
 				}
 				compte ++;
 			}
@@ -178,6 +190,8 @@ public class SaveToCsv {
 	
 
 	public static void main(String[] args) {
+		
+		//pour tester avec des fausses metriques.
 		SaveToCsv test = new SaveToCsv();
 		String[] donnee= {"chemin", "nom", "24", "654", "4.378", "0", "0"};
 		test.ajoutClasse(donnee);
