@@ -4,7 +4,10 @@
  *
  */
 package calcul;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Properties;
 /**
  * Classe pour faire l'analyse des lignes de code pour savoir s'il y a:
  * - du code ou rien
@@ -42,8 +45,22 @@ public class AnalyseLigne {
 		this.resultat = new boolean[4];
 		this.reset();
 		
-		//TODO aller chercher dans le fichier config les caractere qui qui represente un commentaire
-		// et les mettre dans les variables de la classe
+		// loader les properties
+		Properties config = new Properties();
+		try { 
+			FileInputStream fis = new FileInputStream("src/calcul/config.properties");
+			config.load(fis);
+			
+			String commentaire = config.getProperty("CommentaireEndOfLine");
+			this.endOfLine = commentaire.split(",");
+			commentaire = config.getProperty("CommentaireDebut");
+			this.start = commentaire.split(",");
+			commentaire = config.getProperty("CommentaireFin");
+			this.end = commentaire.split(",");
+			
+		} catch (IOException io) {
+			io.printStackTrace();
+		}
 	}
 	
 	/** 
@@ -69,5 +86,9 @@ public class AnalyseLigne {
 		return resultat;
 	}
 	
+	public static void main(String[] args) {
+		AnalyseLigne test = new AnalyseLigne();
+		
+	}
 	
 }

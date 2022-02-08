@@ -5,6 +5,11 @@
  */
 package calcul;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 /**
  * Classe pour calculer les metriques d'une classe.
  * - compter LOC
@@ -15,34 +20,48 @@ package calcul;
  */
 public class Classe {
 
-	/** chemin pour trouver la classe (n'inclut pas le nom de la classe)*/
-	private String chemin;
-	
-	/** Nom de la classe*/
-	private String nomClasse;
+	/** l'objet File de la classe passer en attribut*/
+	private File classe;
 	
 	/** Liste des metriques de classe*/
-	private String[] classe;
+	private String[] metriquesClasse;
 
 	/**
 	 * Constructeur de la classe Classe
 	 * 
-	 * @param chemin  Le chemin a partir du dossier source du projet pour trouver la classe (n'inclut pas la classe)
-	 * @param nomClasse  Le nom du fichier de la classe
+	 * @param classe  Fichier File de la classe a analyser
 	 */
-	public Classe(String chemin, String nomClasse) {
-		this.chemin = chemin;
-		this.nomClasse = nomClasse;
-		this.classe = new String[5];   //TODO remplacer le 5 par la longueur de al structure dans le fichier config
-		this.classe[0] = chemin;
-		this.classe[1] = nomClasse;
+	public Classe(File classe) {
+		this.classe = classe;
+		
+		// loader les properties
+		Properties config = new Properties();
+		try { 
+			FileInputStream fis = new FileInputStream("src/calcul/config.properties");
+			config.load(fis);
+			
+			String metriques = config.getProperty("MetriquesClasse");
+			this.metriquesClasse = metriques.split(",");
+			
+		} catch (IOException io) {
+			io.printStackTrace();
+		}
+		
+		for (int i = 0 ; i < this.metriquesClasse.length; i++) {
+			switch (i){
+				case 0 : this.metriquesClasse[i] = classe.getParent();
+				case 1 : this.metriquesClasse[i] = classe.getName();
+				default : this.metriquesClasse[i] = "0";
+			}
+		}
 	}
 	
 	/** 
 	 * Methode private pour ajouter les metriques d'une nouvelle classe trouver a la liste des classes
 	 */
-	private void saveMetrique(String[] ligne) {
-		//TODO sauvegarde metrique dans le fichier 
+	private void saveMetrique() {
+		SaveToCsv csvClasse = new SaveToCsv();
+		csvClasse.ajoutClasse(metriquesClasse);
 	}
 	
 	/** 
@@ -51,8 +70,9 @@ public class Classe {
 	 */
 	private void analyse() {
 		//TODO lire toute les ligne et les envoyer a AnalyseLigne et garder le cmpte si on est dans un commentaire ou non
-		//TODO enregistrer les metriques de la classe
-		
+
+		//sauvegarder les metriques dans le fichier
+		saveMetrique();
 	}
 	
 	/**
@@ -61,6 +81,10 @@ public class Classe {
 	 * @return String[] Les metriques de la classe
 	 */
 	public String[] getMetrique() {
+		// demande l'analyse de metrique
+		analyse();
+		
+		// return metriquesClasse;
 		String[] fake = {"chemin", "classe", "10", "10", "10", "10", "10"};
 		return fake;
 	}

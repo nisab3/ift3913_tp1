@@ -92,7 +92,8 @@ public class CalculMetrique {
 						if (index >= 0 && i.substring(index + 1).contentEquals(extension)) {
 							
 							// demande l'analyse de la classe
-							Classe classe = new Classe(racine.getPath(), i);
+							File cl = new File(racine.getPath() + "/" + i);
+							Classe classe = new Classe(cl);
 							String[] retourInutil = classe.getMetrique();
 						}
 					}

@@ -96,7 +96,8 @@ public class Paquet {
 			if (index >= 0 && i.substring(index + 1).contentEquals(extension)) {
 				
 				// demande l'analyse de la classe
-				Classe classe = new Classe(paquet.getPath(), i);
+				File cl = new File(paquet.getPath() + "/" + i);
+				Classe classe = new Classe(cl);
 				String[] retour = classe.getMetrique();
 				addMetriquePaquet(retour);
 			}
