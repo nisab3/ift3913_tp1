@@ -23,8 +23,16 @@ public class Classe {
 	/** l'objet File de la classe passer en attribut*/
 	private File classe;
 	
-	/** Liste des metriques de classe*/
-	private String[] metriquesClasse;
+	/** Les metriques de classe*/
+	private String chemin;
+	
+
+	private String nomClasse;
+	private int loc;
+	private int cloc;
+	private int wmc;
+	
+	
 
 	/**
 	 * Constructeur de la classe Classe
@@ -34,7 +42,7 @@ public class Classe {
 	public Classe(File classe) {
 		this.classe = classe;
 		
-		// loader les properties
+		/*// loader les properties
 		Properties config = new Properties();
 		try { 
 			FileInputStream fis = new FileInputStream("src/calcul/config.properties");
@@ -53,7 +61,7 @@ public class Classe {
 				case 1 : this.metriquesClasse[i] = classe.getName();
 				default : this.metriquesClasse[i] = "0";
 			}
-		}
+		}*/
 	}
 	
 	/** 
@@ -61,7 +69,7 @@ public class Classe {
 	 */
 	private void saveMetrique() {
 		SaveToCsv csvClasse = new SaveToCsv();
-		csvClasse.ajoutClasse(metriquesClasse);
+		//csvClasse.ajoutClasse(metriquesClasse);
 	}
 	
 	/** 
@@ -89,6 +97,29 @@ public class Classe {
 		return fake;
 	}
 	
+	public File getClasse() {
+		return classe;
+	}
+
+	public String getChemin() {
+		return chemin;
+	}
+
+	public String getNomClasse() {
+		return nomClasse;
+	}
+
+	public int getLoc() {
+		return loc;
+	}
+
+	public int getCloc() {
+		return cloc;
+	}
+
+	public int getWmc() {
+		return wmc;
+	}
 	
 	
 }
