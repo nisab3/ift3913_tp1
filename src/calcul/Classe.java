@@ -7,8 +7,10 @@ package calcul;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.Scanner;
 
 /**
  * Classe pour calculer les metriques d'une classe.
@@ -26,6 +28,8 @@ public class Classe {
 	/** Les metriques de classe*/
 	private String chemin;
 	
+	private boolean[] resultat;
+	
 
 	private String nomClasse;
 	private int loc;
@@ -40,7 +44,9 @@ public class Classe {
 	 * @param classe  Fichier File de la classe a analyser
 	 */
 	public Classe(File classe) {
-		this.classe = classe;
+		this.classe = classe; 
+		analyse(); 	// demande l'analyse de metrique
+		
 		
 		/*// loader les properties
 		Properties config = new Properties();
@@ -78,6 +84,21 @@ public class Classe {
 	 */
 	private void analyse() {
 		//TODO lire toute les ligne et les envoyer a AnalyseLigne et garder le cmpte si on est dans un commentaire ou non
+		try {
+		      Scanner lecteur = new Scanner(classe);
+		      AnalyseLigne ligne = new AnalyseLigne();
+		      while (lecteur.hasNextLine()) {
+		        resultat = ligne.analyse(lecteur.nextLine());
+		        if (resultat[0]) loc++;
+		        if (resultat[1]) cloc++;
+		        if (resultat[2]) wmc++;
+		        
+		      }
+		      lecteur.close();
+		    } catch (FileNotFoundException e) {
+		      System.out.println("An error occurred.");
+		      e.printStackTrace();
+		    }
 
 		//sauvegarder les metriques dans le fichier
 		saveMetrique();
@@ -89,8 +110,6 @@ public class Classe {
 	 * @return String[] Les metriques de la classe
 	 */
 	public String[] getMetrique() {
-		// demande l'analyse de metrique
-		analyse();
 		
 		// return metriquesClasse;
 		String[] fake = {"chemin", "classe", "10", "10", "10", "10", "10"};
