@@ -103,7 +103,8 @@ public class AnalyseLigne {
 		this.predicat.add("if");
 		this.predicat.add("while");
 		this.predicat.add("for");
-		this.predicat.add("switch");
+		this.predicat.add("case");
+		this.predicat.add("default");
 		
 
 	}
