@@ -142,6 +142,9 @@ public class Classe {
 		
 		double a = getDc();
 		double b = getWmc();
+		if (b == 0) {
+			b = 1.0;
+		}
 		double reponse = a / b;
 		return reponse;
 	}
