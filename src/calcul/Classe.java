@@ -6,10 +6,7 @@
 package calcul;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Properties;
 import java.util.Scanner;
 
 /**
@@ -17,19 +14,23 @@ import java.util.Scanner;
  * - compter LOC
  * - compter CLOC
  * - calculer DC
+ * - calculer WMC
+ * - calculer BC
  * 
- * Nous passont au travers de tout ses classes pour ce faire.
+ * Nous passont au travers de tout ses lignes pour ce faire.
  */
 public class Classe {
 
 	/** l'objet File de la classe passer en attribut*/
 	private File classe;
 
-	
-	private boolean[] resultat;
-	
+	/** Nombre de ligne de code*/
 	private int loc;
+	
+	/** Nombre de ligne de commentaire*/
 	private int cloc;
+	
+	/** Weighted Methods pr Class*/
 	private int wmc;
 	
 	
@@ -52,11 +53,13 @@ public class Classe {
 	
 	
 	/** 
-	 * Methode private pour ajouter les metriques d'une nouvelle classe trouver a la liste des classes
+	 * Methode private pour sauvegarder les metriques de la classe
+	 * dans le fichier de sauvegarde de classe
 	 */
 	private void saveMetrique() {
 		SaveToCsv csvClasse = new SaveToCsv();
-		csvClasse.ajoutClasse(getChemin(), getNomClasse(), getLoc() , getCloc(), getDc(), getWmc(), getBc());
+		csvClasse.ajoutClasse(getChemin(), getNomClasse(), getLoc(),
+				getCloc(), getDc(), getWmc(), getBc());
 	}
 	
 	
@@ -66,51 +69,81 @@ public class Classe {
 	 * Les metriques de la classe seront sauvegarder dans l'objet
 	 */
 	private void analyse() {
-		//TODO lire toute les ligne et les envoyer a AnalyseLigne et garder le cmpte si on est dans un commentaire ou non
 		try {
-		      Scanner lecteur = new Scanner(classe);
-		      AnalyseLigne ligne = new AnalyseLigne();
-		      while (lecteur.hasNextLine()) {
-		        resultat = ligne.analyse(lecteur.nextLine());
-		        if (resultat[1]) {
-		        	loc++;
-		        	cloc++;
-		        }
-		        else if (resultat[0]) loc++;
-		        if (resultat[2]) wmc++;
-		        
-		      }
-		      lecteur.close();
-		    } catch (FileNotFoundException e) {
+			//ouvrir le fichier
+		    Scanner lecteur = new Scanner(classe);
+		    //analiseur de ligne
+		    AnalyseLigne ligne = new AnalyseLigne();
+		    
+			boolean[] resultat;
+			
+		    // lecture ligne par ligne
+		    while (lecteur.hasNextLine()) {
+		    resultat = ligne.analyse(lecteur.nextLine());
+		    
+		    //enregistrement des resultats
+		    if (resultat[1]) {
+		    	loc++;
+		    	cloc++;
+		    }
+		    else if (resultat[0]) loc++;
+		    if (resultat[2]) wmc++;
+		    }
+		    
+		    // fermer le fichier
+		    lecteur.close();
+		    
+		} catch (FileNotFoundException e) {
 		      System.out.println("An error occurred.");
 		      e.printStackTrace();
-		    }
+		}
 
 		//sauvegarder les metriques dans le fichier
 		saveMetrique();
 	}
 
-	
-	public File getClasse() {
-		return classe;
-	}
-
+	/**
+	 * Methode pour avoir le chemin du paquet de la classe
+	 * 
+	 * @return chemin
+	 */
 	public String getChemin() {
 		return classe.getParent();
 	}
-
+	
+	
+	
+	/**
+	 * Methode pour avoir le nom de la classe
+	 * @return nom
+	 */
 	public String getNomClasse() {
 		return classe.getName();
 	}
 
+	
+	/**
+	 * Methode pour avoir le nombre de ligne de code de la classe
+	 * @return loc
+	 */
 	public int getLoc() {
 		return loc;
 	}
 
+	
+	/**
+	 * Methode pour avoir le nombre le ligne de commentaire de la classe
+	 * @return cloc
+	 */
 	public int getCloc() {
 		return cloc;
 	}
 
+	
+	/**
+	 * Methode pour avoir le Weighted Methods per Class
+	 * @return WMC
+	 */
 	public int getWmc() {
 		return wmc;
 	}

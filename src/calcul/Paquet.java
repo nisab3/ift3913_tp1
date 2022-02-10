@@ -15,8 +15,10 @@ import java.util.Properties;
  * - compter LOC
  * - compter CLOC
  * - calculer DC
+ * - calculer WCP
+ * - calculer BC
  * 
- * Nous passont au travers de tout ses classes pour ce faire.
+ * Nous passont au travers de tout ses classes et sous paquets pour ce faire.
  */
 public class Paquet {
 	
@@ -154,6 +156,7 @@ public class Paquet {
 	
 	/*
 	 * Methode private pour rechercher dans le paquet chaque classe et lancer le calcul sur chacune d'elle.
+	 * Nous parcourons aussi chaque dossier trouver a la recherche de sous paquet.
 	 * 
 	 * Sauvegarde dans la variable resultat les totaux des metriques pour le paquet 
 	 */
@@ -220,7 +223,7 @@ public class Paquet {
 	
 	/*
 	 * Sauvegarde les metriques du paquet dans le fichier default pour paquet du programme.
-	 * La sauvegar6de se fera seulement si le paquet contient du code (classe)
+	 * La sauvegarde se fera seulement si le paquet contient du code (classe)
 	 * Sinon il ne se passera rien
 	 */
 	private void savePaquet() {

@@ -90,8 +90,6 @@ public class CalculMetrique {
 			io.printStackTrace();
 		}
 		
-		
-
 		System.out.println("bienvenue dans le programme de calcul de metrique");
 		parcourir(data);
 		System.out.println("FINI");

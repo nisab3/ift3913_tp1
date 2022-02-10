@@ -14,9 +14,9 @@ import java.util.Properties;
 
 /**
  * Classe SaveToCsv pour sauvegarder les resultat des calcules de metriques des paquets et classes
- * dans un fichier paquet_"nomDuDossier".csv et un fichier classe_"nomDuDossier".csv
+ * dans un fichier .csv chacun.
  * 
- * Les fichiers seront dans le dossier "resultats"
+ * Les fichiers seront dans le dossier defini dans les properties
  */
 public class SaveToCsv {
 	
@@ -203,15 +203,5 @@ public class SaveToCsv {
 			System.out.println(e);
 			e.printStackTrace();
 		}
-	}
-	
-
-	public static void main(String[] args) {
-		
-		//pour tester avec des fausses metriques.
-		SaveToCsv test = new SaveToCsv();
-		test.ajoutClasse("data\\chemin\\ckdman\\dsa.java", "nom", 24, 5645, 4.566, 23, 6.3);
-		test.ajoutPaquet("data\\vrai\\magie", "nom", 24, 5645, 4.566, 23, 6.3);
-
 	}
 }
