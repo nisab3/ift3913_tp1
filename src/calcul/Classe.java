@@ -24,14 +24,10 @@ public class Classe {
 
 	/** l'objet File de la classe passer en attribut*/
 	private File classe;
-	
-	/** Les metriques de classe*/
-	private String chemin;
+
 	
 	private boolean[] resultat;
 	
-
-	private String nomClasse;
 	private int loc;
 	private int cloc;
 	private int wmc;
@@ -45,38 +41,25 @@ public class Classe {
 	 */
 	public Classe(File classe) {
 		this.classe = classe; 
+		this.loc = 0;
+		this.cloc = 0;
+		this.wmc = 0;
+				
 		analyse(); 	// demande l'analyse de metrique
 		
-		
-		/*// loader les properties
-		Properties config = new Properties();
-		try { 
-			FileInputStream fis = new FileInputStream("src/calcul/config.properties");
-			config.load(fis);
-			
-			String metriques = config.getProperty("MetriquesClasse");
-			this.metriquesClasse = metriques.split(",");
-			
-		} catch (IOException io) {
-			io.printStackTrace();
-		}
-		
-		for (int i = 0 ; i < this.metriquesClasse.length; i++) {
-			switch (i){
-				case 0 : this.metriquesClasse[i] = classe.getParent();
-				case 1 : this.metriquesClasse[i] = classe.getName();
-				default : this.metriquesClasse[i] = "0";
-			}
-		}*/
 	}
+	
+	
 	
 	/** 
 	 * Methode private pour ajouter les metriques d'une nouvelle classe trouver a la liste des classes
 	 */
 	private void saveMetrique() {
 		SaveToCsv csvClasse = new SaveToCsv();
-		//csvClasse.ajoutClasse(metriquesClasse);
+		csvClasse.ajoutClasse(getChemin(), getNomClasse(), getLoc() , getCloc(), getDc(), getWmc(), getBc());
 	}
+	
+	
 	
 	/** 
 	 * Methode private pour annalyser chaque ligne de la classe
@@ -106,29 +89,18 @@ public class Classe {
 		//sauvegarder les metriques dans le fichier
 		saveMetrique();
 	}
-	
-	/**
-	 * Methode pour avoir la liste des metriques de la classe
-	 * 
-	 * @return String[] Les metriques de la classe
-	 */
-	public String[] getMetrique() {
-		
-		// return metriquesClasse;
-		String[] fake = {"chemin", "classe", "10", "10", "10", "10", "10"};
-		return fake;
-	}
+
 	
 	public File getClasse() {
 		return classe;
 	}
 
 	public String getChemin() {
-		return chemin;
+		return classe.getParent();
 	}
 
 	public String getNomClasse() {
-		return nomClasse;
+		return classe.getName();
 	}
 
 	public int getLoc() {
@@ -141,6 +113,37 @@ public class Classe {
 
 	public int getWmc() {
 		return wmc;
+	}
+	
+	
+	
+	/**
+	 * Methode pour avoir le la densite de commentaire de la classe
+	 *  cloc / loc
+	 *
+	 * @return DC
+	 */
+	public double getDc() {
+		
+		double a = getCloc();
+		double b = getLoc();
+		double reponse = a / b;
+		return reponse;
+	}
+	
+	
+	/**
+	 * Methode pour avoir le degre selon la classe est bien commentee
+	 *  DC / Wmc
+	 *
+	 * @return  BC
+	 */
+	public double getBc() {
+		
+		double a = getDc();
+		double b = getWmc();
+		double reponse = a / b;
+		return reponse;
 	}
 	
 	

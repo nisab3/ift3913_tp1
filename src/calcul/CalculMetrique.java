@@ -5,10 +5,8 @@
  */
 package calcul;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -46,9 +44,6 @@ public class CalculMetrique {
 		
 		// si la liste n'est pas vide nous allons cherche les dossier et fichier code
 		if ((listeFichier != null) && (listeFichier.length >= 1)) {
-			
-			// si on a trouver un fichier code = true
-			Boolean fichierCode = false;
 			
 			for (String i : listeFichier) {
 				
