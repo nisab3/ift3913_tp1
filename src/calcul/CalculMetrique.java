@@ -40,17 +40,9 @@ public class CalculMetrique {
 	 * @param chemin  String du chemin ou commencer a parcourir
 	 */
 	private static void parcourir(String chemin) {
-		//TODO parcourir la structure pour trouver les paquets
 		
 		File racine = new File(chemin);
 		String[] listeFichier = racine.list();
-		
-		// verifier si on est dans le dossier racine
-		// car s'il y a des fichier code ils ne seront pas dans un paquet.
-		Boolean dossierRacine = false;
-		if (racine.getName().contentEquals(data)) {
-			dossierRacine = true;
-		}
 		
 		// si la liste n'est pas vide nous allons cherche les dossier et fichier code
 		if ((listeFichier != null) && (listeFichier.length >= 1)) {
@@ -65,39 +57,17 @@ public class CalculMetrique {
 				
 				// si c'est pas un dossier, compare a l'extention voulu
 				if (index >= 0 && i.substring(index + 1).contentEquals(extension)) {
-					fichierCode = true;			
+					// demande l'analyse de la classe
+					File cl = new File(racine.getPath() + "/" + i);
+					Classe classe = new Classe(cl);		
+					System.out.println(racine.getPath() + "/" + i);
 				}
 				
 				// si cest un dossier on parcourt 
-				else {					
-					parcourir(chemin + i + "/");
+				else {	
+					File filep = new File(racine.getPath() + "/" + i + "/");
+					Paquet paquet = new Paquet(filep);
 				}	
-			}
-			
-			// si on a trouver un fichier de code on calcul
-			if (fichierCode) {
-			
-				if (dossierRacine == false) {					// pas dans la racine
-					Paquet paquet = new Paquet(racine);
-					paquet.calcul();
-					System.out.println("fini calcul paquet " + racine.getPath());
-					
-				} else {										// dans la racine
-					for (String i : listeFichier) {
-						
-						// recherche l'extention
-						int index = i.lastIndexOf('.');
-						
-						// si c'est pas un dossier, compare a l'extention voulu
-						if (index >= 0 && i.substring(index + 1).contentEquals(extension)) {
-							
-							// demande l'analyse de la classe
-							File cl = new File(racine.getPath() + "/" + i);
-							Classe classe = new Classe(cl);
-							String[] retourInutil = classe.getMetrique();
-						}
-					}
-				}
 			}
 			
 		  // si ya rien dans le dossier
@@ -129,6 +99,7 @@ public class CalculMetrique {
 
 		System.out.println("bienvenue dans le programme de calcul de metrique");
 		parcourir(data);	
+		
 	}
 
 }
