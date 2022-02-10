@@ -184,11 +184,6 @@ public class Paquet {
 					addMetriqueSousPaquet(p.getWcp());
 				}	
 			}
-			
-			// si on a trouver un fichier de code on sauvegarde le paquet dans le csv
-			if (this.loc > 0) {
-				savePaquet();
-			}
 		}
 
 	}
@@ -200,7 +195,7 @@ public class Paquet {
 	 * @param cloc  le nombre de ligne de commentaire
 	 * @param wmc le weighted methods per class de la classe
 	 */
-	private void addMetriqueClasse(int loc, int cloc, double wmc) {
+	private void addMetriqueClasse(int loc, int cloc, int wmc) {
 		this.loc += loc;
 		this.cloc += cloc;
 		this.wcp += wmc;	
@@ -220,12 +215,16 @@ public class Paquet {
 	
 	
 	/*
-	 * Sauvegarde les metriques du paquet dans le fichier default pour paquet du programme
+	 * Sauvegarde les metriques du paquet dans le fichier default pour paquet du programme.
+	 * La sauvegar6de se fera seulement si le paquet contient du code (classe)
+	 * Sinon il ne se passera rien
 	 */
 	private void savePaquet() {
-		SaveToCsv uniteSauvegarde = new SaveToCsv();
-		//save paquet
-//		uniteSauvegarde.ajoutPaquet(resultat);
+		if (this.loc > 0) {
+			SaveToCsv uniteSauvegarde = new SaveToCsv();
+			uniteSauvegarde.ajoutPaquet(getChemin(), getNom(), getPaquetLoc(), getPaquetCloc(),
+					getPaquetDc(), getWcp(), getPaquetBc());
+		}
 	}
 	
 	/**

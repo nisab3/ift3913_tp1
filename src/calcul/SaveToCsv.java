@@ -33,6 +33,9 @@ public class SaveToCsv {
 	/** Entete de la liste des metrique d'une classe */
 	private String[] metriquesClasse;
 	
+	/** Nom du dossier racine */
+	private String root;
+	
 	
 	/**
 	 * Contructeur de l'unite de sauvegarde
@@ -54,6 +57,7 @@ public class SaveToCsv {
 			metriques = config.getProperty("MetriquesPaquet");
 			this.metriquesPaquet = metriques.split(",");
 			this.longueurMetriques = this.metriquesPaquet.length;
+			this.root = config.getProperty("Root") + '.';
 			
 			
 			
@@ -119,9 +123,15 @@ public class SaveToCsv {
 	/**
 	 * Ajoute une entree dans le fichier d'enregistrement des classes.
 	 * 
-	 * @param metriques String[] :  Liste des metriques de la classe comme formater dans le fichier de properties
+	 * @param chemin  String Le paquet de la classe
+	 * @param nom     String Le nom de la classe
+	 * @param loc     Int Le nombre de ligne de code de la classe
+	 * @param cloc    Int Le nombre de ligne de commentaire de la classe
+	 * @param dc      Double La densite de commentaire
+	 * @param wmc     Int Le weighted Methods per Class
+	 * @param bc      Double Le degre selon lequel la classe est bien commente
 	 */
-	public void ajoutClasse(String[] metriques) {
+	public void ajoutClasse(String chemin, String nom, int loc, int cloc, double dc, int wmc, double bc) {
 		
 		// savegarde les metrique dans le fichier
 		try {
@@ -130,19 +140,20 @@ public class SaveToCsv {
 			File csvClasse = new File(dossierSauvegarde + "/" + nomFichierClasse + ".csv");
 			FileWriter fw = new FileWriter (csvClasse, true);
 			BufferedWriter br = new BufferedWriter(fw);
-			// pour compter les metriques car a la fin de ligne on mets \n
-			int compte = 1;
-			
+				
+			// changer tout les \ du chemin en . et enlever le dossier root
+			String cheminClean = chemin.replaceAll("\\\\", ".");
+			cheminClean = cheminClean.replaceFirst(root, "");
+						
 			// ecrire dans le fichier
-			for (String i : metriques) {
-				br.write(i);
-				if(compte == longueurMetriques) {
-					br.write("\n");					// si fin de ligne
-				} else {
-					br.write(",");					// tous les autres
-				}
-				compte ++;
-			}
+			br.write(cheminClean + ",");
+			br.write(nom + ",");
+			br.write(Integer.toString(loc) + ",");
+			br.write(Integer.toString(cloc) + ",");
+			br.write(Double.toString(dc) + ",");
+			br.write(Integer.toString(wmc) + ",");
+			br.write(Double.toString(bc) + "\n");
+			
 			br.close();
 			fw.close();
 			
@@ -155,9 +166,15 @@ public class SaveToCsv {
 	/**
 	 * Ajoute une entree dans le fichier d"enregistrement des paquets.
 	 * 
-	 * @param metriques  String[] :  formater comme les metriques de paquet dans le fichier de properties
+	 * @param chemin  String Le chemin du paquet
+	 * @param nom     String Le nom du paquet
+	 * @param loc     Int Le nombre de ligne de code du paquet
+	 * @param cloc    Int Le nombre de ligne de commentaire du paquet
+	 * @param dc      Double La densite de commentaire
+	 * @param wcp     Int Le weighted classes per package
+	 * @param bc      Double Le degre selon lequel le paquet est bien commente
 	 */
-	public void ajoutPaquet(String[] metriques) {
+	public void ajoutPaquet(String chemin, String nom, int loc, int cloc, double dc, int wcp, double bc) {
 
 		// savegarde les metrique dans le fichier
 		try {
@@ -166,19 +183,19 @@ public class SaveToCsv {
 			FileWriter fw = new FileWriter (csvPaquet, true);
 			BufferedWriter br = new BufferedWriter(fw);
 			
-			// pour compter les metriques car a la fin de ligne on mets \n
-			int compte = 1;
+			// changer tout les \ du chemin en . et enlever le dossier root
+			String cheminClean = chemin.replaceAll("\\\\", ".");
+			cheminClean = cheminClean.replaceFirst(root, "");
 			
 			// ecrire dans le fichier
-			for (String i : metriques) {
-				br.write(i);
-				if(compte == longueurMetriques) {
-					br.write("\n");					// si fin de ligne
-				} else {
-					br.write(",");					// tout les autres
-				}
-				compte ++;
-			}
+			br.write(cheminClean + ",");
+			br.write(nom + ",");
+			br.write(Integer.toString(loc) + ",");
+			br.write(Integer.toString(cloc) + ",");
+			br.write(Double.toString(dc) + ",");
+			br.write(Integer.toString(wcp) + ",");
+			br.write(Double.toString(bc) + "\n");
+			
 			br.close();
 			fw.close();
 			
@@ -193,8 +210,8 @@ public class SaveToCsv {
 		
 		//pour tester avec des fausses metriques.
 		SaveToCsv test = new SaveToCsv();
-		String[] donnee= {"chemin", "nom", "24", "654", "4.378", "0", "0"};
-		test.ajoutClasse(donnee);
-		
+		test.ajoutClasse("data\\chemin\\ckdman\\dsa.java", "nom", 24, 5645, 4.566, 23, 6.3);
+		test.ajoutPaquet("data\\vrai\\magie", "nom", 24, 5645, 4.566, 23, 6.3);
+
 	}
 }
