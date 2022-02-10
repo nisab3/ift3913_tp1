@@ -89,8 +89,11 @@ public class Classe {
 		      AnalyseLigne ligne = new AnalyseLigne();
 		      while (lecteur.hasNextLine()) {
 		        resultat = ligne.analyse(lecteur.nextLine());
-		        if (resultat[0]) loc++;
-		        if (resultat[1]) cloc++;
+		        if (resultat[1]) {
+		        	loc++;
+		        	cloc++;
+		        }
+		        else if (resultat[0]) loc++;
 		        if (resultat[2]) wmc++;
 		        
 		      }

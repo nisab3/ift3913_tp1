@@ -43,11 +43,23 @@ public class AnalyseLigne {
 	/** caracteres qui represente la fin d'un bloc */
 	private ArrayList <String> end;
 	
+	/** caracteres qui represente le debut d'une methode */
+	private ArrayList <String> startMethod;
+	
+	/** caracteres qui represente le debut d'un bloc */
+	private ArrayList <String> endMethod;
+	
+	/** caracteres qui represente un noeud predicat */
+	private ArrayList <String> predicat;
+	
 	/** boolean indicant la presence d'un bloc */
 	private boolean bloc;
 	
 	/** int indicant le nombre de commentaires imbriques*/
-	private int imbrique;
+	private int blocImbrique;
+	
+	/** int indicant le nombre de commentaires imbriques*/
+	private int bracketImbrique;
 
 	/**
 	 * Constructeur de analyseLigne
@@ -56,7 +68,8 @@ public class AnalyseLigne {
 	public AnalyseLigne() {
 		this.resultat = new boolean[3]; // {code, commentaire, bloc}
 		this.bloc = false;
-		this.imbrique = 0;
+		this.blocImbrique = 0;
+		this.bracketImbrique=0;
 		this.reset();
 		
 
@@ -85,6 +98,13 @@ public class AnalyseLigne {
 		this.start.add("/*");
 		this.start.add("/**");
 		this.end.add("*/");
+		this.startMethod.add("{");
+		this.endMethod.add("}");
+		this.predicat.add("if");
+		this.predicat.add("while");
+		this.predicat.add("for");
+		this.predicat.add("switch");
+		
 
 	}
 	
@@ -92,9 +112,7 @@ public class AnalyseLigne {
 	 * Methode pour remettre la liste de resultat a false.
 	 */
 	private void reset() {
-		resultat[0]= false;
-		resultat[1]= false;
-		resultat[2]= bloc;
+		Arrays.fill(resultat, false);
 	}
 	
 	
@@ -116,7 +134,7 @@ public class AnalyseLigne {
 		if (vide(ligne)) return resultat;  	// ligne vide
 		resultat[0]= code(ligne);			// ligne avec code	
 		resultat[1]= commentaire(ligne);	// ligne avec commentaire
-		resultat[2]= bloc;					// presence d'un bloc
+		if (resultat[0]) resultat[2]= wmc(ligne);	// presence d'un predicat
 		return resultat; 
 	
 	}
@@ -125,6 +143,22 @@ public class AnalyseLigne {
 	public static void main(String[] args) {
 		AnalyseLigne test = new AnalyseLigne();
 		
+	}
+	
+	/* Methode qui prend en parametre une ligne du fichier et retourne le bool indiquant
+	 * si la ligne contient un element de WMC
+	 */
+	private boolean wmc(String ligne) {
+		boolean pred = symbol(ligne, predicat);
+		boolean debutMet  = symbol(ligne, startMethod);
+		boolean finMet = symbol(ligne, endMethod);
+		boolean retour = false;
+		
+		if (debutMet && bracketImbrique == 1) retour = true;
+		if (pred) retour = true;
+		if (debutMet) bracketImbrique++;
+		if (finMet) bracketImbrique++;
+		return retour;
 	}
 
 	/* Methode qui prend en parametre une ligne du fichier et retourne le bool indiquant
@@ -139,9 +173,9 @@ public class AnalyseLigne {
 	 * si la ligne contient un commentaire
 	 */
 	private boolean commentaire (String ligne) {
-		boolean blocComment = commentaire(ligne,start); // presence d'un bloc
-		boolean endComment = commentaire(ligne,endOfLine); //presence endOfLine
-		boolean endBloc = commentaire(ligne,end); // fin d'un bloc
+		boolean blocComment = symbol(ligne,start); // presence d'un bloc
+		boolean endComment = symbol(ligne,endOfLine); //presence endOfLine
+		boolean endBloc = symbol(ligne,end); // fin d'un bloc
 		imbrication(blocComment,endBloc);
 		
 		if (endComment|| blocComment || endBloc || bloc) return true;
@@ -153,9 +187,9 @@ public class AnalyseLigne {
 	 * d'une ouverture de bloc et d'une fermeture de bloc respectivement
 	 */
 	private void imbrication(boolean blocComment, boolean endBloc) {
-		if(blocComment) imbrique++;
-		if(endBloc) imbrique--;
-		if(imbrique==0) bloc= false; 
+		if(blocComment) blocImbrique++;
+		if(endBloc) blocImbrique--;
+		if(blocImbrique==0) bloc= false; 
 		else bloc=true;
 		
 	}
@@ -163,7 +197,7 @@ public class AnalyseLigne {
 	/* Methode determinant si le String du premier parametre contient un
 	 * element de la liste passee en second parametre
 	 */
-	private boolean commentaire(String ligne, ArrayList <String> symbols) {
+	private boolean symbol(String ligne, ArrayList <String> symbols) {
 		for(int i=0; i<symbols.size(); i++) {
 			if (ligne.contains(symbols.get(i))) return true;
 		}
