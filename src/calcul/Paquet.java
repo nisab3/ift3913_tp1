@@ -169,12 +169,16 @@ public class Paquet {
 				// recherche l'extention
 				int index = i.lastIndexOf('.');
 				
-				// si c'est pas un dossier, compare a l'extention voulu
-				if (index >= 0 && i.substring(index + 1).contentEquals(extension)) {
-					File cl = new File(paquet.getPath() + "/" + i);
-					Classe classe = new Classe(cl);
-					System.out.println(paquet.getPath() + "/" + i);
-					addMetriqueClasse(classe.getLoc(), classe.getCloc(), classe.getWmc());		
+				// si c'est pas un dossier
+				if (index >= 0) {
+					
+					//compare a l'extention voulu
+					if (i.substring(index + 1).contentEquals(extension)) {
+						File cl = new File(paquet.getPath() + "/" + i);
+						Classe classe = new Classe(cl);
+						System.out.println(paquet.getPath() + "/" + i);
+						addMetriqueClasse(classe.getLoc(), classe.getCloc(), classe.getWmc());
+					}		
 				}
 				
 				// si cest un dossier on parcourt 

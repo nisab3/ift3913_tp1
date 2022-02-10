@@ -93,7 +93,8 @@ public class CalculMetrique {
 		
 
 		System.out.println("bienvenue dans le programme de calcul de metrique");
-		parcourir(data);	
+		parcourir(data);
+		System.out.println("FINI");
 		
 	}
 

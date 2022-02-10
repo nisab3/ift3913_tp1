@@ -71,6 +71,12 @@ public class AnalyseLigne {
 		this.blocImbrique = 0;
 		this.bracketImbrique=0;
 		this.reset();
+		this.endOfLine = new ArrayList<String>();
+		this.start = new ArrayList<String>();
+		this.end = new ArrayList<String>();
+		this.startMethod = new ArrayList<String>();
+		this.endMethod = new ArrayList<String>();
+		this.predicat = new ArrayList<String>();
 		
 
 		/*// loader les properties
