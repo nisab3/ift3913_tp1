@@ -1,15 +1,15 @@
 Solution partie 4:
 
 Classes:
-1:
+1:jfreechart-master.src.main.java.org.jfree.chart.plot.XYPlot.java
 
-2:
+2:jfreechart-master.src.main.java.org.jfree.chart.plot.CategoryPlot.java
 
-3:
+3:jfreechart-master.src.main.java.org.jfree.data.general.DatasetUtils.java
 
 Paquets:
-1:
+1:jfreechart-master.src.main.java.org.jfree.chart
 
-2:
+2:jfreechart-master.src.main.java.org.jfree.chart.plot
 
-3:
+3:jfreechart-master.src.main.java.org.jfree.chart.renderer
