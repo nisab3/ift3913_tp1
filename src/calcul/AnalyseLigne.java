@@ -66,11 +66,13 @@ public class AnalyseLigne {
 	 * nous allons chercher dans le fichier config les caracteres qui represente les commentaires
 	 */
 	public AnalyseLigne() {
-		this.resultat = new boolean[3]; // {code, commentaire, bloc}
+		this.resultat = new boolean[3]; // {code, commentaire, WMC}
 		this.bloc = false;
-		this.blocImbrique = 0;
-		this.bracketImbrique=0;
+		this.blocImbrique =   0;
+		this.bracketImbrique= 0;
+		
 		this.reset();
+		
 		this.endOfLine = new ArrayList<String>();
 		this.start = new ArrayList<String>();
 		this.end = new ArrayList<String>();
@@ -79,31 +81,44 @@ public class AnalyseLigne {
 		this.predicat = new ArrayList<String>();
 		
 
-		/*// loader les properties
+		// loader les properties
 		Properties config = new Properties();
 		try { 
 			FileInputStream fis = new FileInputStream("src/calcul/config.properties");
 			config.load(fis);
 			
-			String commentaire = config.getProperty("CommentaireEndOfLine");
-			this.endOfLine = commentaire.split(",");
-			commentaire = config.getProperty("CommentaireDebut");
-			this.start = commentaire.split(",");
-			commentaire = config.getProperty("CommentaireFin");
-			this.end = commentaire.split(",");
+			String symbol;
+			
+			symbol= config.getProperty("CommentaireEndOfLine");
+			this.endOfLine = creerListe(symbol.split(","));
+			
+			symbol = config.getProperty("CommentaireDebut");
+			this.start =  creerListe(symbol.split(","));
+			
+			symbol = config.getProperty("CommentaireFin");
+			this.end =  creerListe(symbol.split(","));
+			
+			symbol = config.getProperty("DebutMethode");
+			this.startMethod =  creerListe(symbol.split(","));
+			
+			symbol = config.getProperty("FinMethode");
+			this.endMethod =  creerListe(symbol.split(","));
+			
+			symbol = config.getProperty("Predicat");
+			this.predicat =  creerListe(symbol.split(","));
 			
 		} catch (IOException io) {
 			io.printStackTrace();
 		}
-*/
+
 		//TODO aller chercher dans le fichier config les caractere qui qui represente un commentaire
 		// et les mettre dans les variables de la classe
-		
+		/*
 		// hardcode for the moment
 		this.endOfLine.add("//");
 		this.start.add("/*");
 		this.start.add("/**");
-		this.end.add("*/");
+		this.end.add("/");
 		this.startMethod.add("{");
 		this.endMethod.add("}");
 		this.predicat.add("if");
@@ -111,8 +126,7 @@ public class AnalyseLigne {
 		this.predicat.add("for");
 		this.predicat.add("case");
 		this.predicat.add("default");
-		
-
+		*/
 	}
 	
 	/** 
@@ -122,6 +136,19 @@ public class AnalyseLigne {
 		Arrays.fill(resultat, false);
 	}
 	
+	/* Methode qui prend en parametre un tableau de String et retourne
+	 * une liste contenant les symbols du tableau
+	 */
+	private ArrayList <String> creerListe(String[] tab){
+		ArrayList <String> liste = new ArrayList<String>();
+		
+		for (String symbol : tab) {
+			symbol.trim();
+			liste.add(symbol);
+		}
+		
+		return liste;
+	}
 	
 	/**
 	 * Methode qui permet d'analyser s'il y a du code ou non
@@ -147,9 +174,15 @@ public class AnalyseLigne {
 	}
 	
 
-	public static void main(String[] args) {
+	public static void main() {
 		AnalyseLigne test = new AnalyseLigne();
+		print(test.end);
 		
+	}
+	private static void print(ArrayList<String> list) {
+		for(int i=0; i<=list.size(); i++) {
+			System.out.println(list.get(i));
+		}
 	}
 	
 	/* Methode qui prend en parametre une ligne du fichier et retourne le bool indiquant
@@ -197,8 +230,7 @@ public class AnalyseLigne {
 		if(blocComment) blocImbrique++;
 		if(endBloc) blocImbrique--;
 		if(blocImbrique==0) bloc= false; 
-		else bloc=true;
-		
+		else bloc=true;	
 	}
 	
 	/* Methode determinant si le String du premier parametre contient un
@@ -226,6 +258,5 @@ public class AnalyseLigne {
 		}
 		return false;
 	}
-
 	
 }
