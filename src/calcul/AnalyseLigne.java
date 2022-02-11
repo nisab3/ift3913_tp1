@@ -8,7 +8,6 @@ package calcul;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Properties;
 import java.util.ArrayList;
 
@@ -30,9 +29,6 @@ import java.util.ArrayList;
  */
 
 public class AnalyseLigne {
-	
-	/** liste de bool de l'analyse {code, commentaire , bloc}. */
-	private boolean[] resultat;
 	
 	/** caracteres qui represente les comemntaires end_of_line */
 	private ArrayList <String> endOfLine;
@@ -60,18 +56,27 @@ public class AnalyseLigne {
 	
 	/** int indicant le nombre de commentaires imbriques*/
 	private int bracketImbrique;
+	
+	/** bool indicant la presence de code sur la ligne*/
+	private boolean code;
+	
+	/** bool indicant la presence de commentaire sur la ligne*/
+	private boolean commentaire;
+
+	/** bool indicant la presence de wmc sur la ligne*/
+	private boolean wmc;
 
 	/**
 	 * Constructeur de analyseLigne
 	 * nous allons chercher dans le fichier config les caracteres qui represente les commentaires
 	 */
 	public AnalyseLigne() {
-		this.resultat = new boolean[3]; // {code, commentaire, WMC}
 		this.bloc = false;
 		this.blocImbrique =   0;
 		this.bracketImbrique= 0;
-		
 		this.reset();
+		
+		// Creation des listes de parametres
 		
 		this.endOfLine = new ArrayList<String>();
 		this.start = new ArrayList<String>();
@@ -80,8 +85,6 @@ public class AnalyseLigne {
 		this.endMethod = new ArrayList<String>();
 		this.predicat = new ArrayList<String>();
 		
-
-		// loader les properties
 		Properties config = new Properties();
 		try { 
 			FileInputStream fis = new FileInputStream("src/calcul/config.properties");
@@ -111,29 +114,15 @@ public class AnalyseLigne {
 			io.printStackTrace();
 		}
 
-		//TODO aller chercher dans le fichier config les caractere qui qui represente un commentaire
-		// et les mettre dans les variables de la classe
-		/*
-		// hardcode for the moment
-		this.endOfLine.add("//");
-		this.start.add("/*");
-		this.start.add("/**");
-		this.end.add("/");
-		this.startMethod.add("{");
-		this.endMethod.add("}");
-		this.predicat.add("if");
-		this.predicat.add("while");
-		this.predicat.add("for");
-		this.predicat.add("case");
-		this.predicat.add("default");
-		*/
 	}
 	
 	/** 
-	 * Methode pour remettre la liste de resultat a false.
+	 * Methode pour remettre les boolean a false.
 	 */
 	private void reset() {
-		Arrays.fill(resultat, false);
+		this.code = false;
+		this.commentaire = false;
+		this.wmc = false;
 	}
 	
 	/* Methode qui prend en parametre un tableau de String et retourne
@@ -146,7 +135,6 @@ public class AnalyseLigne {
 			symbol.trim();
 			liste.add(symbol);
 		}
-		
 		return liste;
 	}
 	
@@ -157,23 +145,21 @@ public class AnalyseLigne {
 	 * et aussi des bebut et fin de bloc de commentaire
 	 * 
 	 * @param ligne  String de la ligne de code a analyser
-	 * @return  LA liste des resultats trouver dans la ligne 
-	 *          {code ou rien, comment ou rien, start bloc, end bloc}
 	 */
-	public boolean[] analyse(String ligne) {
+	public void analyse(String ligne) {
 		
 		this.reset();   		//remettre resultat a false
 		ligne.trim();			//enlever les espaces de debut de ligne
 		
-		if (vide(ligne)) return resultat;  	// ligne vide
-		resultat[0]= code(ligne);			// ligne avec code	
-		resultat[1]= commentaire(ligne);	// ligne avec commentaire
-		if (resultat[0]) resultat[2]= wmc(ligne);	// presence d'un predicat
-		return resultat; 
+		if (!vide(ligne)) {  	// ligne non vide
+			code = code(ligne);			// ligne avec code	
+			commentaire = commentaire(ligne);	// ligne avec commentaire
+			if (code) wmc = wmc(ligne);	// presence d'un predicat
+		} 
 	
 	}
 	
-
+	// 2 FONCTIONS TEST***
 	public static void main() {
 		AnalyseLigne test = new AnalyseLigne();
 		print(test.end);
@@ -259,4 +245,15 @@ public class AnalyseLigne {
 		return false;
 	}
 	
+	public boolean isCode() {
+		return code;
+	}
+
+	public boolean isCommentaire() {
+		return commentaire;
+	}
+
+	public boolean isWmc() {
+		return wmc;
+	}
 }

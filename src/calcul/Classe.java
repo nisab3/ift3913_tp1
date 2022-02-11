@@ -74,20 +74,19 @@ public class Classe {
 		    Scanner lecteur = new Scanner(classe);
 		    //analiseur de ligne
 		    AnalyseLigne ligne = new AnalyseLigne();
-		    
-			boolean[] resultat;
 			
 		    // lecture ligne par ligne
 		    while (lecteur.hasNextLine()) {
-		    resultat = ligne.analyse(lecteur.nextLine());
+		    	ligne.analyse(lecteur.nextLine());
 		    
-		    //enregistrement des resultats
-		    if (resultat[1]) {
-		    	loc++;
-		    	cloc++;
-		    }
-		    else if (resultat[0]) loc++;
-		    if (resultat[2]) wmc++;
+		    	//enregistrement des resultats
+		    	if (ligne.isCommentaire()) {
+		    		loc++;
+		    		cloc++;
+		    	}
+		    	else if (ligne.isCode()) loc++;
+		    	
+		    	if (ligne.isWmc()) wmc++;
 		    }
 		    
 		    // fermer le fichier
