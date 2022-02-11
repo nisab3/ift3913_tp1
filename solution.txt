@@ -13,3 +13,36 @@ Paquets:
 2:jfreechart-master.src.main.java.org.jfree.chart.plot
 
 3:jfreechart-master.src.main.java.org.jfree.chart.renderer
+
+
+Analyse:
+
+Les métriques qui permettent  d'évaluer les classes et paquets les mieux commentés sont respectivement
+classe_DC et paquet_DC. Le raisonnement est le suivant, on a que classe_DC = classe_CLOC / classe_LOC.
+Or, classe_LOC représente le nombre de ligne avec des commentaires ou du code. Ce qui implique que le 
+calcul de classe_DC est bien une densité de commentaires pour une classe. Le même raisonnement peut être
+fait pour le calcul de paquet_DC. Pour ce qui est du WMC, cette métrique est la somme pondérée des 
+complexités cyclomatiques de McCabe, elle n'offre aucune information au sujet des commentaires présents
+dans une classe. Il en va de même pour le WCP qui n’est que la somme des WMC de toutes les classes d’un 
+paquet et les WCP de ses sous-paquets. Ce qui nous laisse avec classe_BC et paquet_BC qui représentent
+supposement le degré selon lequel une classe est bien commentée et degré selon lequel un paquet est 
+bien commenté. Or, on a que classe_BC = classe_DC / WMC, en sachant que classe_DC est un réel entre 0
+et 1, on peut voir que classe_BC peut être approximé par 1 / WMC. Ce qui ne dépend aucunnement de 
+classe_DC. On peut donc conclure que classe_BC ne fournit aucune information sur les commentaires
+présents dans la classe. Par la même logique, paquet_BC peut être approximé par 1 / WCP qui 
+ne fournit aucune information sur les commentaires présents dans le paquet. On peut donc conclure que 
+classe_DC et paquet_DC sont des statistiques exhaustives pour représenter la qualité du niveau de 
+commentaire dans une classe et un paquet respectivement. Les classes et paquets choisient comme étant 
+les moins bien commentés sont donc ceux ayant les plus petits classe_DC et paquet_DC.    
+
+Solution:
+
+On peut voir que les classes les moins bien commentées sont toutes des classes de tests. En sachant que
+les classes tests sont réputées pour être moins bien commentées, cela indique que classe_DC est une
+métrique. Une solution serait donc de bien commenter les classes de tests ou de ne pas faire le calcul
+pour ces classes. Nous avons opté de les prendre en compte dans nos calculs, comme elles sont 
+indicatrices du bon choix de metrique pour la présence de commentaire dans une classe. 
+
+En analysant les paquets les moins bien commentés, on peut voir qu'ils sont tous des paquets dans le 
+dossier test. Ce qui indique que la solution offert pour les classes de tests repond aussi au 
+problème des paquets les moins bien commentés.    
