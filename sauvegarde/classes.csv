@@ -1,5 +1,4 @@
 chemin, classe, classe_LOC, classe_CLOC, classe_DC, WMC, classe_BC
-jfreechart-master.src.main.java,module-info.java,43,3,0.06976744186046512,1,0.06976744186046512
 jfreechart-master.src.main.java.org.jfree.chart.annotations,AbstractAnnotation.java,198,130,0.6565656565656566,6,0.10942760942760943
 jfreechart-master.src.main.java.org.jfree.chart.annotations,AbstractXYAnnotation.java,186,109,0.5860215053763441,9,0.06511350059737157
 jfreechart-master.src.main.java.org.jfree.chart.annotations,Annotation.java,57,50,0.8771929824561403,0,0.8771929824561403

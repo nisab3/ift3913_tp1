@@ -8,6 +8,7 @@ package calcul;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Properties;
 
 /**
@@ -24,6 +25,9 @@ public class Paquet {
 	
 	/** extention du des fichier de code a parcourir*/
 	private String extension;
+	
+	/** liste de fichiers a ignorer*/
+	private ArrayList <String> ignorerFichier;
 	
 	/** File qui represente le paquet a analyser*/
 	private File paquet;
@@ -45,6 +49,7 @@ public class Paquet {
 	 */
 	public Paquet(File paquet) {
 		this.paquet = paquet;
+		this.ignorerFichier = new ArrayList<String>();
 		
 		// loader les properties
 		Properties config = new Properties();
@@ -52,6 +57,11 @@ public class Paquet {
 			FileInputStream fis = new FileInputStream("src/calcul/config.properties");
 			config.load(fis);
 			this.extension = config.getProperty("Extension");	
+			String fichiers = config.getProperty("IgnorerFichier");
+			String[] fichierSeparer = fichiers.split(",");
+			for(String i : fichierSeparer) {
+				this.ignorerFichier.add(i+ "." + this.extension);
+			}
 		} catch (IOException io) {
 			io.printStackTrace();
 		}
@@ -176,7 +186,8 @@ public class Paquet {
 				if (index >= 0) {
 					
 					//compare a l'extention voulu
-					if (i.substring(index + 1).contentEquals(extension)) {
+					if (i.substring(index + 1).contentEquals(extension)
+							&& !this.ignorerFichier.contains(i)) {
 						File cl = new File(paquet.getPath() + "/" + i);
 						Classe classe = new Classe(cl);
 						System.out.println(paquet.getPath() + "/" + i);
