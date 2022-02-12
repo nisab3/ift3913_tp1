@@ -4,15 +4,24 @@
 Nicolas Sabourin (1068459)
 Dave Sanon-Abraham ( )
 
+GIT:
+https://github.com/nisab3/ift3913_tp1.git
 
+UTILISATION:
 Il faut ajouter le dossier du projet à analyser au même emplacement que tp1.jar.
+Ce dossier sera pris en compte dans le nom de chaque paquet en étant le root.
 
-Nous commencons en appelant la commande "java -jar tp1.jar".
-Le programme va demander le nom du dossier comtenant le projet à analyser.
+Une classe seul doit être a la même place.  La sauvegarde se fera avec un chemin vide car elle n'a pas de paquet.
+
+Nous commencons en appelant la commande "java -jar tp1.jar" dans une fenetre command prompt sous windows 
+en étant dans le dossier ou ce trouve le .jar.
+
+Le programme va demander le nom du dossier comtenant le projet à analyser, ou le nom de la classe (incluant l'extention).
+
 Les documents .csv seront sauvegardés à coté de tp1.jar.
 
 Le programme débute dans le main() de la classe CalculMetrique().
-Il parcourt tous les dossiers fournis pour chercher les fichiers ayant extension .java
+Il parcourt tous les dossiers fournis pour chercher les fichiers ayant extension .java fournis dans le .properties
 
 .PROPERTIES:
 Ce fichier contient :
