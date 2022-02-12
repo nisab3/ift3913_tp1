@@ -139,6 +139,7 @@ public class SaveToCsv {
 			BufferedWriter br = new BufferedWriter(fw);
 				
 			// changer tout les \ du chemin en . 
+			// si c'est une classe sans paquet il ny a pas de chemin
 			String cheminClean;
 			if (chemin != null) {
 				cheminClean = chemin.replaceAll("\\\\", ".");
