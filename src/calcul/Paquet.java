@@ -6,8 +6,8 @@
 package calcul;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -51,17 +51,19 @@ public class Paquet {
 		this.paquet = paquet;
 		this.ignorerFichier = new ArrayList<String>();
 		
-		// loader les properties
-		Properties config = new Properties();
 		try { 
-			FileInputStream fis = new FileInputStream("src/calcul/config.properties");
-			config.load(fis);
+			InputStream in = this.getClass().getResourceAsStream("config.properties");
+			Properties config = new Properties();
+			config.load(in);
+			
 			this.extension = config.getProperty("Extension");	
 			String fichiers = config.getProperty("IgnorerFichier");
 			String[] fichierSeparer = fichiers.split(",");
 			for(String i : fichierSeparer) {
 				this.ignorerFichier.add(i+ "." + this.extension);
 			}
+			in.close();
+			
 		} catch (IOException io) {
 			io.printStackTrace();
 		}

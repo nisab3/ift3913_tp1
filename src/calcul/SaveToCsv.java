@@ -7,9 +7,9 @@ package calcul;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 /**
@@ -20,8 +20,7 @@ import java.util.Properties;
  */
 public class SaveToCsv {
 	
-	/** Chemin du dossier dans lequel se trouve les fichiers de sauvegarde */
-	private String dossierSauvegarde;
+	
 	/** Le nom qui sera utiliser pour le fichier csv de paquets. */
 	private String nomFichierPaquet;
 	/** Le nom qui sera utiliser pour le fichier csv de classes. */
@@ -46,10 +45,10 @@ public class SaveToCsv {
 		// loader les properties
 		Properties config = new Properties();
 		try { 
-			FileInputStream fis = new FileInputStream("src/calcul/config.properties");
+			
+			InputStream fis = this.getClass().getResourceAsStream("config.properties");
 			config.load(fis);
 			
-			this.dossierSauvegarde = config.getProperty("Sauvegarde") + "/";
 			this.nomFichierPaquet = config.getProperty("NomFichierSauvegardeP");
 			this.nomFichierClasse = config.getProperty("NomFichierSauvegardeC");
 			String metriques = config.getProperty("MetriquesClasse");
@@ -59,7 +58,7 @@ public class SaveToCsv {
 			this.longueurMetriques = this.metriquesPaquet.length;
 			this.root = config.getProperty("Root") + '.';
 			
-			
+			fis.close();
 			
 		} catch (IOException io) {
 			io.printStackTrace();
@@ -68,7 +67,7 @@ public class SaveToCsv {
 		// essais de creer le fichier de sauvegarde des classes si ce n'est pas deja fait
 		try {
 			// ouvrir le fichier
-			File csvClasse = new File(dossierSauvegarde + "/" + nomFichierClasse + ".csv");
+			File csvClasse = new File(nomFichierClasse + ".csv");
 			if(csvClasse.createNewFile()) {
 				// si on creer le fichier:
 				
@@ -95,7 +94,7 @@ public class SaveToCsv {
 		// essais de creer le fichier de sauvegarde pour les paquets
 		try {
 			// ouvrir le fichier
-			File csvPaquet = new File(dossierSauvegarde + "/" + nomFichierPaquet + ".csv");
+			File csvPaquet = new File( nomFichierPaquet + ".csv");
 			if(csvPaquet.createNewFile()) {
 				
 				// si on creer le fichier:
@@ -137,7 +136,7 @@ public class SaveToCsv {
 		try {
 			
 			// ouvrir le fichier
-			File csvClasse = new File(dossierSauvegarde + "/" + nomFichierClasse + ".csv");
+			File csvClasse = new File(nomFichierClasse + ".csv");
 			FileWriter fw = new FileWriter (csvClasse, true);
 			BufferedWriter br = new BufferedWriter(fw);
 				
@@ -179,7 +178,7 @@ public class SaveToCsv {
 		// savegarde les metrique dans le fichier
 		try {
 			//ouvrir le fichier
-			File csvPaquet = new File(dossierSauvegarde + "/" + nomFichierPaquet + ".csv");
+			File csvPaquet = new File( nomFichierPaquet + ".csv");
 			FileWriter fw = new FileWriter (csvPaquet, true);
 			BufferedWriter br = new BufferedWriter(fw);
 			

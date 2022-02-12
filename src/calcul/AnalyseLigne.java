@@ -6,8 +6,9 @@
 
 package calcul;
 
-import java.io.FileInputStream;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 import java.util.ArrayList;
 
@@ -87,7 +88,7 @@ public class AnalyseLigne {
 		
 		Properties config = new Properties();
 		try { 
-			FileInputStream fis = new FileInputStream("src/calcul/config.properties");
+			InputStream fis = this.getClass().getResourceAsStream("config.properties");
 			config.load(fis);
 			
 			String symbol;
@@ -109,6 +110,8 @@ public class AnalyseLigne {
 			
 			symbol = config.getProperty("Predicat");
 			this.predicat =  creerListe(symbol.split(","));
+			
+			fis.close();
 			
 		} catch (IOException io) {
 			io.printStackTrace();
@@ -132,7 +135,7 @@ public class AnalyseLigne {
 		ArrayList <String> liste = new ArrayList<String>();
 		
 		for (String symbol : tab) {
-			symbol.trim();
+			symbol = symbol.trim();
 			liste.add(symbol);
 		}
 		return liste;
@@ -149,7 +152,7 @@ public class AnalyseLigne {
 	public void analyse(String ligne) {
 		
 		this.reset();   		//remettre resultat a false
-		ligne.trim();			//enlever les espaces de debut de ligne
+		ligne = ligne.trim();			//enlever les espaces de debut de ligne
 		
 		if (!vide(ligne)) {  	// ligne non vide
 			code = code(ligne);			// ligne avec code	

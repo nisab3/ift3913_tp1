@@ -6,9 +6,7 @@
 package calcul;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
+import java.util.Scanner;
 
 
 /**
@@ -28,9 +26,8 @@ public class CalculMetrique {
 	/** Nom du fichier source du projet a calculer*/
 	private static String data;
 	
-	/** extention du des fichier de code a parcourir*/
-	private static String extension;
-	
+	/** Extension des classes a analyser*/
+	private static String extension = "java";
 	
 	/**
 	 * Pour parcourir recurcivement la structure a la recherche des paquets
@@ -55,13 +52,14 @@ public class CalculMetrique {
 					// demande l'analyse de la classe
 					File cl = new File(racine.getPath() + "/" + i);
 					Classe classe = new Classe(cl);		
-					System.out.println(racine.getPath() + "/" + i);
+					System.out.println(classe.getNomClasse());
 				}
 				
 				// si cest un dossier on parcourt 
 				else {	
 					File filep = new File(racine.getPath() + "/" + i + "/");
 					Paquet paquet = new Paquet(filep);
+					System.out.println(paquet.getNom());
 				}	
 			}
 			
@@ -78,20 +76,13 @@ public class CalculMetrique {
 	 */
 	public static void main(String[] args) {
 		
-		// loader les properties
-		Properties config = new Properties();
-		try { 
-			FileInputStream fis = new FileInputStream("src/calcul/config.properties");
-			config.load(fis);
-			data = config.getProperty("Root") + '/';
-			extension = config.getProperty("Extension");
-			
-		} catch (IOException io) {
-			io.printStackTrace();
-		}
-		
 		System.out.println("bienvenue dans le programme de calcul de metrique");
+		Scanner myObj = new Scanner(System.in);  // Creer le sanner
+	    System.out.println("Quel est le dossier a analyser :");
+
+	    data = myObj.nextLine();  // lire le input
 		parcourir(data);
+		myObj.close();
 		System.out.println("FINI");
 		
 	}
