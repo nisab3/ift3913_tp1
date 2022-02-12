@@ -36,37 +36,24 @@ public class CalculMetrique {
 	 */
 	private static void parcourir(String chemin) {
 		
-		File racine = new File(chemin);
-		String[] listeFichier = racine.list();
 		
-		// si la liste n'est pas vide nous allons cherche les dossier et fichier code
-		if ((listeFichier != null) && (listeFichier.length >= 1)) {
-			
-			for (String i : listeFichier) {
-				
-				// recherche l'extention
-				int index = i.lastIndexOf('.');
-				
-				// si c'est pas un dossier, compare a l'extention voulu
-				if (index >= 0 && i.substring(index + 1).contentEquals(extension)) {
-					// demande l'analyse de la classe
-					File cl = new File(racine.getPath() + "/" + i);
-					Classe classe = new Classe(cl);		
-					System.out.println(classe.getNomClasse());
-				}
-				
-				// si cest un dossier on parcourt 
-				else {	
-					File filep = new File(racine.getPath() + "/" + i + "/");
-					Paquet paquet = new Paquet(filep);
-					System.out.println(paquet.getNom());
-				}	
-			}
-			
-		  // si ya rien dans le dossier
-		} else {
-			System.out.println("rien dans le dossier " + racine.getPath());
+		// recherche l'extention
+		int index = chemin.lastIndexOf('.');
+		// si c'est pas un dossier, compare a l'extention voulu
+		if (index >= 0 && chemin.substring(index + 1).contentEquals(extension)) {
+			// demande l'analyse de la classe
+			File racine = new File(chemin);
+			Classe classe = new Classe(racine);		
+			System.out.println(classe.getNomClasse());
 		}
+		// si cest un dossier on parcourt 
+		else {	
+		
+			File filep = new File(chemin + "/");
+			Paquet paquet = new Paquet(filep);
+			System.out.println(paquet.getNom());
+		}	
+		
 	}
 
 	/**
@@ -78,7 +65,7 @@ public class CalculMetrique {
 		
 		System.out.println("bienvenue dans le programme de calcul de metrique");
 		Scanner myObj = new Scanner(System.in);  // Creer le sanner
-	    System.out.println("Quel est le dossier a analyser :");
+	    System.out.println("Quel est le dossier a analyser ou le fichier de la classe (avec l'extention) :");
 
 	    data = myObj.nextLine();  // lire le input
 		parcourir(data);

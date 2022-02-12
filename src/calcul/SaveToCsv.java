@@ -32,8 +32,6 @@ public class SaveToCsv {
 	/** Entete de la liste des metrique d'une classe */
 	private String[] metriquesClasse;
 	
-	/** Nom du dossier racine */
-	private String root;
 	
 	
 	/**
@@ -56,7 +54,7 @@ public class SaveToCsv {
 			metriques = config.getProperty("MetriquesPaquet");
 			this.metriquesPaquet = metriques.split(",");
 			this.longueurMetriques = this.metriquesPaquet.length;
-			this.root = config.getProperty("Root") + '.';
+			
 			
 			fis.close();
 			
@@ -140,9 +138,14 @@ public class SaveToCsv {
 			FileWriter fw = new FileWriter (csvClasse, true);
 			BufferedWriter br = new BufferedWriter(fw);
 				
-			// changer tout les \ du chemin en . et enlever le dossier root
-			String cheminClean = chemin.replaceAll("\\\\", ".");
-			cheminClean = cheminClean.replaceFirst(root, "");
+			// changer tout les \ du chemin en . 
+			String cheminClean;
+			if (chemin != null) {
+				cheminClean = chemin.replaceAll("\\\\", ".");
+			} else {
+				cheminClean = "";
+			}
+			
 						
 			// ecrire dans le fichier
 			br.write(cheminClean + ",");
@@ -182,9 +185,8 @@ public class SaveToCsv {
 			FileWriter fw = new FileWriter (csvPaquet, true);
 			BufferedWriter br = new BufferedWriter(fw);
 			
-			// changer tout les \ du chemin en . et enlever le dossier root
+			// changer tout les \ du chemin en . 
 			String cheminClean = chemin.replaceAll("\\\\", ".");
-			cheminClean = cheminClean.replaceFirst(root, "");
 			
 			// ecrire dans le fichier
 			br.write(cheminClean + ",");

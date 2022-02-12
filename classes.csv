@@ -290,6 +290,7 @@ data.jfreechart-master.src.main.java.org.jfree.chart.renderer,AreaRendererEndTyp
 data.jfreechart-master.src.main.java.org.jfree.chart.renderer.category,AbstractCategoryItemRenderer.java,1542,618,0.40077821011673154,133,0.0030133700008776808
 data.jfreechart-master.src.main.java.org.jfree.chart.renderer.category,AreaRenderer.java,299,107,0.35785953177257523,28,0.012780697563306258
 data.jfreechart-master.src.main.java.org.jfree.chart.renderer.category,BarPainter.java,84,73,0.8690476190476191,0,0.8690476190476191
+data.jfreechart-master.src.main.java.org.jfree.chart.renderer.category,BarRenderer.java,1200,521,0.43416666666666665,108,0.004020061728395061
 data.jfreechart-master.src.main.java.org.jfree.chart.renderer.category,BoxAndWhiskerRenderer.java,1012,419,0.4140316205533597,90,0.004600351339481774
 data.jfreechart-master.src.main.java.org.jfree.chart.renderer.category,CategoryItemRenderer.java,1439,1269,0.881862404447533,32,0.027558200138985408
 data.jfreechart-master.src.main.java.org.jfree.chart.renderer.category,CategoryItemRendererState.java,186,122,0.6559139784946236,6,0.1093189964157706
