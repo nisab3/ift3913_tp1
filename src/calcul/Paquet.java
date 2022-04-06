@@ -199,9 +199,11 @@ public class Paquet {
 				
 				// si cest un dossier on parcourt 
 				else {
-					File filep = new File(paquet.getPath() + "/" + i + "/");
-					Paquet p = new Paquet(filep);
-					addMetriqueSousPaquet(p.getWcp());
+					if (!i.equals("test")) {
+						File filep = new File(paquet.getPath() + "/" + i + "/");
+						Paquet p = new Paquet(filep);
+						addMetriqueSousPaquet(p.getWcp());
+					}
 				}	
 			}
 		}

@@ -143,6 +143,7 @@ public class SaveToCsv {
 			String cheminClean;
 			if (chemin != null) {
 				cheminClean = chemin.replaceAll("\\\\", ".");
+				cheminClean = cheminClean.substring(cheminClean.indexOf(".") + 1);
 			} else {
 				cheminClean = "";
 			}
@@ -188,6 +189,7 @@ public class SaveToCsv {
 			
 			// changer tout les \ du chemin en . 
 			String cheminClean = chemin.replaceAll("\\\\", ".");
+			cheminClean = cheminClean.substring(cheminClean.indexOf(".") + 1);
 			
 			// ecrire dans le fichier
 			br.write(cheminClean + ",");

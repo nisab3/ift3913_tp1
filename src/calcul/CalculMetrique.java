@@ -64,12 +64,13 @@ public class CalculMetrique {
 	public static void main(String[] args) {
 		
 		System.out.println("bienvenue dans le programme de calcul de metrique");
-		Scanner myObj = new Scanner(System.in);  // Creer le sanner
+//		Scanner myObj = new Scanner(System.in);  // Creer le sanner
 	    System.out.println("Quel est le dossier a analyser ou le fichier de la classe (avec l'extention) :");
 
-	    data = myObj.nextLine();  // lire le input
+//	    data = myObj.nextLine();  // lire le input
+	    data = "jfreechart";
 		parcourir(data);
-		myObj.close();
+//		myObj.close();
 		System.out.println("FINI");
 		
 	}
